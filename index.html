@@ -1,0 +1,2163 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>七領域をつなぐ知識地図</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&family=Shippori+Mincho:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   七領域をつなぐ知識地図 — editorial styles
+   ============================================================ */
+
+:root {
+  --paper:        #efe8d6;
+  --paper-2:      #e7dec7;
+  --paper-deep:   #ddd0b1;
+  --ink:          #1c1814;
+  --ink-2:        #2f2820;
+  --muted:        #6e6452;
+  --muted-2:      #998b71;
+  --rule:         #c5b793;
+  --rule-soft:    #d8caa9;
+  --accent:       #b13427;
+  --accent-deep:  #84251c;
+  --indigo:       #2a4858;
+  --gold:         #a37b1f;
+
+  --serif: "Shippori Mincho", "Noto Serif JP", "YuMincho", "Hiragino Mincho ProN", serif;
+  --sans:  "Noto Sans JP", "Hiragino Kaku Gothic ProN", "YuGothic", system-ui, sans-serif;
+  --mono:  "JetBrains Mono", ui-monospace, "Menlo", monospace;
+
+  --pad-page: clamp(20px, 4vw, 56px);
+  --measure: 64ch;
+}
+
+[data-theme="dark"] {
+  --paper:        #15120e;
+  --paper-2:      #1c1813;
+  --paper-deep:   #251f17;
+  --ink:          #ece2c8;
+  --ink-2:        #d6cab0;
+  --muted:        #8e826a;
+  --muted-2:      #6b6150;
+  --rule:         #3a3225;
+  --rule-soft:    #2a2419;
+  --accent:       #d2503e;
+  --accent-deep:  #a13a2c;
+  --indigo:       #6f96a9;
+  --gold:         #c9a14a;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-feature-settings: "palt";
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 0%, color-mix(in oklab, var(--paper-2) 70%, transparent) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 100%, color-mix(in oklab, var(--paper-deep) 55%, transparent) 0%, transparent 70%),
+    var(--paper);
+  min-height: 100vh;
+}
+
+/* paper grain */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .35;
+  z-index: 0;
+  background-image:
+    radial-gradient(rgba(0,0,0,.025) 1px, transparent 1px),
+    radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 3px 3px, 5px 5px;
+  background-position: 0 0, 1px 2px;
+  mix-blend-mode: multiply;
+}
+[data-theme="dark"] body::before { mix-blend-mode: screen; opacity: .15; }
+
+main, header, footer, nav { position: relative; z-index: 1; }
+
+/* ---------- shell ---------- */
+
+.page {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 var(--pad-page);
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--rule) 20%, var(--rule) 80%, transparent);
+  margin: clamp(40px, 6vw, 80px) 0;
+  border: 0;
+}
+
+/* ---------- top nav ---------- */
+
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in oklab, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.topnav-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 14px var(--pad-page);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.topnav-mark {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  color: var(--ink);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.topnav-mark .seal {
+  display: inline-block;
+  width: 14px; height: 14px;
+  background: var(--accent);
+  border-radius: 2px;
+  transform: translateY(2px);
+}
+.topnav-links {
+  display: flex;
+  gap: 22px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin-left: auto;
+}
+.topnav-links a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: color .15s, border-color .15s;
+}
+.topnav-links a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+
+@media (max-width: 720px) {
+  .topnav-links { display: none; }
+}
+
+.theme-toggle {
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: .14em;
+  padding: 6px 10px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.theme-toggle:hover { color: var(--ink); border-color: var(--ink); }
+
+/* ---------- hero ---------- */
+
+.hero {
+  padding: clamp(60px, 10vw, 140px) 0 clamp(40px, 6vw, 80px);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(24px, 4vw, 48px);
+}
+.hero-eyebrow {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  letter-spacing: .42em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.hero-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(40px, 7.5vw, 96px);
+  line-height: 1.1;
+  letter-spacing: .02em;
+  margin: 0;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.hero-title .accent { color: var(--accent); }
+.hero-lead {
+  max-width: 56ch;
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 2;
+  color: var(--ink-2);
+  margin: 0;
+}
+.hero-meta {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  letter-spacing: .14em;
+  color: var(--muted);
+  padding-top: 24px;
+  border-top: 1px solid var(--rule-soft);
+}
+.hero-meta .label { color: var(--muted-2); margin-right: 6px; }
+
+/* ---------- section heading ---------- */
+
+.section {
+  padding: clamp(40px, 5vw, 64px) 0;
+}
+
+.section-head {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 32px;
+  align-items: baseline;
+  margin-bottom: clamp(36px, 5vw, 64px);
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--rule);
+}
+.section-num {
+  font-family: var(--serif);
+  font-size: 14px;
+  letter-spacing: .3em;
+  color: var(--accent);
+}
+.section-num strong { font-weight: 500; }
+.section-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(28px, 3.6vw, 44px);
+  line-height: 1.25;
+  margin: 0;
+  letter-spacing: .015em;
+}
+.section-sub {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: .24em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+@media (max-width: 720px) {
+  .section-head { grid-template-columns: 1fr; gap: 8px; }
+}
+
+/* ---------- legend / map ---------- */
+
+.legend {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+@media (max-width: 880px) {
+  .legend { grid-template-columns: 1fr; }
+}
+
+.legend-prose p {
+  font-size: 16.5px;
+  line-height: 2;
+  margin: 0 0 1.4em;
+  color: var(--ink-2);
+  text-align: justify;
+  text-justify: inter-character;
+}
+.legend-prose p:first-child::first-letter {
+  font-size: 3.2em;
+  float: left;
+  line-height: .9;
+  padding: 4px 10px 0 0;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* the map */
+.map {
+  top: 80px;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 56px 56px 64px 64px;
+  position: relative;
+}
+.map-axes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.map-axis-label {
+  position: absolute;
+  font-family: var(--sans);
+  font-size: 10.5px;
+  letter-spacing: .22em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.map-axis-label.top    { top: 18px; left: 50%; transform: translateX(-50%); }
+.map-axis-label.bottom { bottom: 18px; left: 50%; transform: translateX(-50%); }
+.map-axis-label.left   { left: 18px;  top: 50%; transform: rotate(-90deg) translateY(-50%); transform-origin: left top; }
+.map-axis-label.right  { right: -2px; top: 50%; transform: rotate(-90deg) translateY(50%); transform-origin: right top; }
+
+.map-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed var(--rule);
+}
+.map-canvas::before, .map-canvas::after {
+  content: "";
+  position: absolute;
+  background: var(--rule-soft);
+}
+.map-canvas::before { left: 50%; top: 0; bottom: 0; width: 1px; }
+.map-canvas::after  { top: 50%; left: 0; right: 0; height: 1px; }
+
+.map-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform .25s ease;
+}
+.map-pin:hover { transform: translate(-50%, -50%) scale(1.05); z-index: 5; }
+.map-pin .dot {
+  width: 12px; height: 12px;
+  background: var(--accent);
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.map-pin.indigo .dot { background: var(--indigo); box-shadow: 0 0 0 1px var(--indigo); }
+.map-pin.gold .dot { background: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+.map-pin .label {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--paper);
+  padding: 3px 8px;
+  border-radius: 2px;
+  border: 1px solid var(--rule-soft);
+  white-space: nowrap;
+}
+.map-pin .index {
+  font-family: var(--sans);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .12em;
+}
+
+.map-svg { position: absolute; inset: 0; pointer-events: none; }
+
+/* ---------- field cards ---------- */
+
+.fields-intro {
+  font-family: var(--sans);
+  font-size: 13px;
+  letter-spacing: .18em;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(28px, 3vw, 48px);
+}
+
+article.field {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  padding: clamp(28px, 3vw, 44px) 0;
+  border-top: 1px solid var(--rule);
+  position: relative;
+  scroll-margin-top: 80px;
+}
+article.field:last-child { border-bottom: 1px solid var(--rule); }
+
+.field-side {
+  position: sticky;
+  top: 80px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.field-num {
+  font-family: var(--serif);
+  font-size: 13px;
+  letter-spacing: .3em;
+  color: var(--accent);
+}
+.field-name {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(28px, 3vw, 38px);
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: .015em;
+  text-wrap: balance;
+}
+.field-name-en {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  letter-spacing: .22em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.field-quote {
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--accent-deep);
+  border-left: 2px solid var(--accent);
+  padding-left: 14px;
+  font-feature-settings: "palt";
+}
+
+.field-body {
+  display: grid;
+  gap: 28px;
+}
+.field-block {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 24px;
+  align-items: baseline;
+}
+.field-block-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: .2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  padding-top: 4px;
+  border-top: 2px solid var(--accent);
+  align-self: start;
+}
+.field-block-body {
+  font-size: 15.5px;
+  line-height: 2;
+  color: var(--ink-2);
+  text-align: justify;
+}
+.field-block-body p { margin: 0 0 1em; }
+.field-block-body p:last-child { margin: 0; }
+
+.layer-stack {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 6px;
+}
+@media (max-width: 720px) {
+  .layer-stack { grid-template-columns: 1fr; }
+}
+.layer {
+  background: var(--paper-2);
+  border: 1px solid var(--rule-soft);
+  border-radius: 3px;
+  padding: 14px 16px;
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+.layer-name {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  letter-spacing: .2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+.layer ul { margin: 0; padding-left: 1.1em; }
+.layer li { margin: 0; }
+
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+@media (max-width: 720px) { .book-list { grid-template-columns: 1fr; } }
+.book {
+  border: 1px solid var(--rule-soft);
+  background: var(--paper);
+  padding: 16px 16px 18px;
+  border-radius: 3px;
+  display: grid;
+  gap: 4px;
+}
+.book-mark {
+  width: 20px; height: 3px;
+  background: var(--accent);
+  margin-bottom: 6px;
+}
+.book-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 15.5px;
+  line-height: 1.4;
+  letter-spacing: .01em;
+}
+.book-author {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  letter-spacing: .08em;
+  color: var(--muted);
+}
+
+.essential {
+  background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--accent) 8%, transparent));
+  border-left: 3px solid var(--accent);
+  padding: 14px 18px;
+  font-size: 14.5px;
+  line-height: 1.95;
+  color: var(--ink-2);
+}
+.essential strong { color: var(--accent-deep); font-weight: 600; }
+
+/* timeline */
+.timeline {
+  display: grid;
+  gap: 12px;
+  border-left: 1px solid var(--rule);
+  padding-left: 20px;
+  position: relative;
+}
+.timeline-item {
+  position: relative;
+  padding-left: 6px;
+}
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -26px;
+  top: 12px;
+  width: 8px; height: 8px;
+  background: var(--paper);
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+}
+.timeline-era {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  letter-spacing: .22em;
+  color: var(--accent);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+.timeline-text {
+  font-size: 14.5px;
+  line-height: 1.85;
+}
+
+@media (max-width: 880px) {
+  article.field { grid-template-columns: 1fr; }
+  .field-side { position: static; }
+  .field-block { grid-template-columns: 1fr; gap: 8px; }
+  .field-block-label { width: max-content; }
+}
+
+/* ---------- entity styles ---------- */
+
+.ent {
+  border-bottom: 1px dotted var(--muted);
+  cursor: help;
+  font-feature-settings: "palt";
+}
+.ent.is-book   { font-style: normal; color: var(--accent-deep); border-bottom-color: var(--accent); }
+.ent.is-book::before { content: "\300E"; color: var(--accent); }
+.ent.is-book::after  { content: "\300F"; color: var(--accent); }
+.ent.is-person { color: var(--indigo); border-bottom-color: var(--indigo); }
+.ent.is-field  { color: var(--ink); font-weight: 600; border-bottom: 0; }
+
+/* ---------- traveling concepts ---------- */
+
+.concepts {
+  display: grid;
+  gap: 28px;
+}
+.concept {
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  padding: clamp(24px, 3vw, 36px);
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: clamp(24px, 4vw, 48px);
+}
+@media (max-width: 880px) {
+  .concept { grid-template-columns: 1fr; }
+}
+.concept-head { display: grid; gap: 8px; align-content: start; }
+.concept-kanji {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(28px, 3vw, 36px);
+  line-height: 1.15;
+  letter-spacing: .02em;
+}
+.concept-en {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  letter-spacing: .22em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.concept-tag {
+  display: inline-block;
+  width: max-content;
+  font-family: var(--sans);
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 3px 8px;
+  border-radius: 2px;
+  margin-top: 6px;
+}
+.concept-body {
+  font-size: 15px;
+  line-height: 2;
+  color: var(--ink-2);
+  text-align: justify;
+}
+.concept-body p { margin: 0 0 1em; }
+.concept-body p:last-child { margin: 0; }
+
+.concept-trail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--rule);
+}
+.trail-step {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.trail-step + .trail-step::before {
+  content: "\2192";
+  margin-right: 6px;
+  color: var(--accent);
+}
+.trail-step .name { color: var(--ink); font-weight: 600; }
+
+/* ---------- influence map ---------- */
+
+.influence-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+@media (max-width: 880px) { .influence-grid { grid-template-columns: 1fr; } }
+
+.influence-prose p {
+  font-size: 15.5px;
+  line-height: 2;
+  margin: 0 0 1.4em;
+  color: var(--ink-2);
+  text-align: justify;
+}
+
+.influence-diagram {
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  padding: 24px;
+  border-radius: 4px;
+  position: sticky;
+  top: 80px;
+}
+.influence-diagram h4 {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: .24em;
+  color: var(--muted);
+  margin: 0 0 16px;
+  text-transform: uppercase;
+}
+.influence-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.summary-pull {
+  margin-top: 36px;
+  padding: 28px clamp(20px, 3vw, 36px);
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 4px;
+  font-family: var(--serif);
+  font-size: clamp(16px, 1.6vw, 20px);
+  line-height: 1.95;
+  text-align: justify;
+}
+[data-theme="dark"] .summary-pull { background: var(--paper-deep); color: var(--ink); }
+.summary-pull strong {
+  color: var(--accent);
+  font-weight: 600;
+  background: linear-gradient(transparent 60%, color-mix(in oklab, var(--accent) 18%, transparent) 60%);
+  padding: 0 2px;
+}
+
+/* ---------- next step ---------- */
+
+.paths {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(20px, 2.5vw, 32px);
+}
+@media (max-width: 880px) { .paths { grid-template-columns: 1fr; } }
+
+.path {
+  border: 1px solid var(--rule);
+  border-top: 4px solid var(--accent);
+  padding: clamp(22px, 2.5vw, 32px);
+  background: var(--paper-2);
+  border-radius: 0 0 4px 4px;
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+.path:nth-child(2) { border-top-color: var(--indigo); }
+.path:nth-child(3) { border-top-color: var(--gold); }
+
+.path-eyebrow {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  letter-spacing: .24em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.path:nth-child(2) .path-eyebrow { color: var(--indigo); }
+.path:nth-child(3) .path-eyebrow { color: var(--gold); }
+
+.path-question {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(18px, 1.8vw, 22px);
+  line-height: 1.5;
+  letter-spacing: .01em;
+  margin: 0;
+}
+.path-route {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  letter-spacing: .08em;
+}
+.path-route .step {
+  background: var(--paper);
+  border: 1px solid var(--rule-soft);
+  padding: 4px 10px;
+  border-radius: 2px;
+  color: var(--ink);
+}
+.path-route .arrow { color: var(--accent); }
+.path:nth-child(2) .path-route .arrow { color: var(--indigo); }
+.path:nth-child(3) .path-route .arrow { color: var(--gold); }
+
+.path-text {
+  font-size: 14.5px;
+  line-height: 1.95;
+  color: var(--ink-2);
+  text-align: justify;
+}
+
+/* ---------- footer ---------- */
+
+.footer {
+  margin-top: clamp(60px, 8vw, 120px);
+  padding: 48px 0 56px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .08em;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer .seal {
+  display: inline-block;
+  width: 10px; height: 10px;
+  background: var(--accent);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* ---------- tooltip ---------- */
+[data-tooltip] { position: relative; }
+[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: .04em;
+  padding: 6px 10px;
+  border-radius: 2px;
+  white-space: nowrap;
+  z-index: 100;
+  pointer-events: none;
+  font-feature-settings: normal;
+}
+
+/* ---------- small utils ---------- */
+.kbd {
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  padding: 1px 6px;
+  border-radius: 2px;
+  color: var(--ink-2);
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 100;
+  width: 0%;
+  transition: width .08s linear;
+}
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="progress"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="topnav-mark"><span class="seal"></span>知識地図</div>
+    <div class="topnav-links">
+      <a href="#legend">凡例</a>
+      <a href="#judgment">人の判断</a>
+      <a href="#organization">組織と知識</a>
+      <a href="#concepts">旅する概念</a>
+      <a href="#influence">影響マップ</a>
+      <a href="#next">次の一歩</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="テーマ切替">DARK</button>
+  </div>
+</nav>
+
+<main class="page">
+
+  <!-- ============================== HERO ============================== -->
+  <header class="hero">
+    <div class="hero-eyebrow">A KNOWLEDGE CARTOGRAPHY · 知の見取図</div>
+    <h1 class="hero-title">七領域をつなぐ<br /><span class="accent">知識地図</span></h1>
+    <p class="hero-lead">
+      認知心理学、社会心理学、行動経済学、組織論、ナレッジマネジメント、学習する組織、システム思考。
+      別々の学問に見えて、扱っているのは同じ現実の異なる縮尺である。
+      本稿はその七つの地形を、橋となる五つの概念とともに歩く案内図である。
+    </p>
+    <div class="hero-meta">
+      <div><span class="label">構成</span>七領域 ／ 五概念 ／ 三経路</div>
+      <div><span class="label">読み方</span>上から通読、または地図から領域を選択</div>
+      <div><span class="label">分量</span>約 30 分</div>
+    </div>
+  </header>
+
+  <hr class="divider" />
+
+  <!-- ============================== LEGEND + MAP ============================== -->
+  <section class="section" id="legend">
+    <div class="section-head">
+      <div>
+        <div class="section-num"><strong>I</strong> · 序</div>
+      </div>
+      <div>
+        <h2 class="section-title">地図の凡例</h2>
+        <div class="section-sub">How to read this map</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-prose">
+        <p>
+          この地図は、横方向を「個人の認知から集団・組織へ」、縦方向を「現象の説明から介入設計へ」、奥行きを「明示しやすい知識から暗黙に働く知へ」として読むと見通しがよい。
+          左側には<span class="ent is-field">認知心理学</span>、<span class="ent is-field">社会心理学</span>、<span class="ent is-field">行動経済学</span>が並び、
+          右側には<span class="ent is-field">組織論</span>、<span class="ent is-field">ナレッジマネジメント</span>、学習する組織、<span class="ent is-field">システム思考</span>が並ぶ。
+          中央の橋になるのは、<em>限定合理性</em>、<em>社会的アイデンティティ</em>、<em>ルーティン</em>、<em>暗黙知</em>、<em>フィードバックループ</em>である。
+          これは各領域の定義と発展史を突き合わせたときに最も安定して現れる接続点でもある。
+        </p>
+        <p>
+          読む順番にもコツがある。人間の判断の歪みから入りたいなら、認知心理学→社会心理学→行動経済学の順が分かりやすい。
+          組織の失敗と変化から入りたいなら、組織論→学習する組織→システム思考→ナレッジマネジメントの順が見通しを与える。
+          なぜなら前者は「個人の処理制約」を、後者は「集合的な持続と変化」を主題にしており、両者を結ぶのが知識創造とフィードバックだからである。
+        </p>
+      </div>
+
+      <!-- 2D MAP -->
+      <div class="map" aria-label="七領域マップ">
+        <span class="map-axis-label top">介入 · INTERVENE</span>
+        <span class="map-axis-label bottom">説明 · EXPLAIN</span>
+        <span class="map-axis-label left">個人 · INDIVIDUAL</span>
+        <span class="map-axis-label right">集合 · COLLECTIVE</span>
+        <div class="map-canvas">
+          <svg class="map-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M 18 70 Q 50 50 82 30" stroke="#b13427" stroke-width="0.25" fill="none" stroke-dasharray="0.8 0.8" opacity="0.5" />
+            <path d="M 22 30 Q 50 50 78 70" stroke="#2a4858" stroke-width="0.25" fill="none" stroke-dasharray="0.8 0.8" opacity="0.5" />
+            <path d="M 50 12 L 50 90" stroke="#a37b1f" stroke-width="0.2" fill="none" stroke-dasharray="0.6 1.2" opacity="0.4" />
+          </svg>
+
+          <a href="#cognitive" class="map-pin" style="left: 18%; top: 30%;">
+            <div class="dot"></div>
+            <div class="label">認知心理学</div>
+            <div class="index">01</div>
+          </a>
+          <a href="#social" class="map-pin" style="left: 38%; top: 22%;">
+            <div class="dot"></div>
+            <div class="label">社会心理学</div>
+            <div class="index">02</div>
+          </a>
+          <a href="#behavioral" class="map-pin" style="left: 28%; top: 60%;">
+            <div class="dot"></div>
+            <div class="label">行動経済学</div>
+            <div class="index">03</div>
+          </a>
+          <a href="#organization-theory" class="map-pin indigo" style="left: 70%; top: 28%;">
+            <div class="dot"></div>
+            <div class="label">組織論</div>
+            <div class="index">04</div>
+          </a>
+          <a href="#km" class="map-pin indigo" style="left: 82%; top: 56%;">
+            <div class="dot"></div>
+            <div class="label">ナレッジマネジメント</div>
+            <div class="index">05</div>
+          </a>
+          <a href="#learning" class="map-pin indigo" style="left: 62%; top: 72%;">
+            <div class="dot"></div>
+            <div class="label">学習する組織</div>
+            <div class="index">06</div>
+          </a>
+          <a href="#systems" class="map-pin gold" style="left: 50%; top: 88%;">
+            <div class="dot"></div>
+            <div class="label">システム思考</div>
+            <div class="index">07</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ============================== PART II — JUDGMENT ============================== -->
+  <section class="section" id="judgment">
+    <div class="section-head">
+      <div>
+        <div class="section-num"><strong>II</strong> · 個</div>
+      </div>
+      <div>
+        <h2 class="section-title">人の判断を扱う三領域</h2>
+        <div class="section-sub">Three fields on individual cognition</div>
+      </div>
+    </div>
+
+    <div class="fields-intro">— 認知心理学／社会心理学／行動経済学</div>
+
+    <div class="fields">
+
+      <!-- ============= 認知心理学 ============= -->
+      <article class="field" id="cognitive">
+        <aside class="field-side">
+          <div class="field-num">領域 01</div>
+          <h3 class="field-name">認知心理学</h3>
+          <div class="field-name-en">Psychology of Mental Processes</div>
+          <blockquote class="field-quote">
+            心はどのように情報を取り込み、選び、保持し、予測し、行為へ変換するのか。
+          </blockquote>
+        </aside>
+        <div class="field-body">
+
+          <div class="field-block">
+            <div class="field-block-label">誕生の文脈</div>
+            <div class="field-block-body">
+              <p>行動主義では言語・記憶・推論の複雑さを説明しきれないという危機から始まった一九五〇〜六〇年代の認知革命であり、コンピュータ科学・言語学・神経科学との接触が決定的だった。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">学問的位置</div>
+            <div class="field-block-body">
+              <p>実験心理学の中核にいながら、認知科学、神経科学、AI、言語学と恒常的に境界を接する。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">概念の層構造</div>
+            <div class="field-block-body">
+              <div class="layer-stack">
+                <div class="layer">
+                  <span class="layer-name">基盤層</span>
+                  <ul>
+                    <li>表象としての心</li>
+                    <li>注意と記憶の容量制約</li>
+                    <li>構成的・予測的な認知</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">理論層</span>
+                  <ul>
+                    <li>注意</li>
+                    <li>ワーキングメモリ</li>
+                    <li>長期記憶</li>
+                    <li>カテゴリー化と一般化</li>
+                    <li>計算レベル分析</li>
+                    <li>予測処理</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">応用層</span>
+                  <ul>
+                    <li>学習設計</li>
+                    <li>ヒューマンファクター</li>
+                    <li>UI 設計</li>
+                    <li>判断支援</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">理論的系譜</div>
+            <div class="field-block-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <span class="timeline-era">創成期</span>
+                  <div class="timeline-text"><span class="ent is-person" data-tooltip="Psychologist">George A. Miller</span> と <span class="ent is-person" data-tooltip="Cognitive psychologist">Ulric Neisser</span> による認知革命の口火。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">第一の転換点</span>
+                  <div class="timeline-text">認知革命そのもの — 心を情報処理系として記述する枠組みの確立。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">第二の転換点</span>
+                  <div class="timeline-text"><span class="ent is-person" data-tooltip="Psychologist">Alan Baddeley</span> らによるワーキングメモリ研究と、<span class="ent is-person" data-tooltip="Neuroscientist">David Marr</span> の計算論的アプローチ。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">2015 年以降</span>
+                  <div class="timeline-text">注意と記憶を分けずに扱う統合理解、一般化を数理的に記述する計算認知、そして予測処理をめぐる脳と心の統合理論。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">必読の知識源</div>
+            <div class="field-block-body">
+              <div class="book-list">
+                <div class="book"><div class="book-mark"></div><div class="book-title">認知心理学</div><div class="book-author">Ulric Neisser</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">ワーキングメモリ</div><div class="book-author">Alan Baddeley</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">ビジョン</div><div class="book-author">David Marr</div></div>
+              </div>
+              <p style="margin-top:18px;"></p>
+              <div class="essential">
+                <strong>外せない概念　|　ワーキングメモリ。</strong>認知を静的な保存庫ではなく、行為を支える能動的制御系として捉え直した。
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- ============= 社会心理学 ============= -->
+      <article class="field" id="social">
+        <aside class="field-side">
+          <div class="field-num">領域 02</div>
+          <h3 class="field-name">社会心理学</h3>
+          <div class="field-name-en">Psychology of Social Interaction</div>
+          <blockquote class="field-quote">
+            人は他者の現前・想像・規範の下で、どのように思考し感情を抱き行動するのか。
+          </blockquote>
+        </aside>
+        <div class="field-body">
+
+          <div class="field-block">
+            <div class="field-block-label">誕生の文脈</div>
+            <div class="field-block-body">
+              <p>二〇世紀初頭から一九二〇年代にかけて態度・模倣・群衆・偏見・宣伝を扱う学問としてアメリカで整い、戦後には同調、説得、集団過程、偏見研究で急速に展開した。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">学問的位置</div>
+            <div class="field-block-body">
+              <p>心理学の一部でありながら、社会学、政治学、組織行動、コミュニケーション研究へ大きく開く。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">概念の層構造</div>
+            <div class="field-block-body">
+              <div class="layer-stack">
+                <div class="layer">
+                  <span class="layer-name">基盤層</span>
+                  <ul>
+                    <li>状況主義</li>
+                    <li>規範に敏感な自己</li>
+                    <li>関係的に作られるアイデンティティ</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">理論層</span>
+                  <ul>
+                    <li>帰属理論</li>
+                    <li>認知的不協和</li>
+                    <li>社会的アイデンティティ／自己カテゴリー化</li>
+                    <li>同調と規範</li>
+                    <li>態度変容と説得</li>
+                    <li>偏見と集団間関係</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">応用層</span>
+                  <ul>
+                    <li>偏見低減</li>
+                    <li>行動変容キャンペーン</li>
+                    <li>オンラインコミュニティ運営</li>
+                    <li>リーダーシップ設計</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">理論的系譜</div>
+            <div class="field-block-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <span class="timeline-era">創成期</span>
+                  <div class="timeline-text"><span class="ent is-person" data-tooltip="Psychologist">William McDougall</span> や <span class="ent is-person" data-tooltip="Sociologist">Edward Alsworth Ross</span> の著作が出発点。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">第一の転換点</span>
+                  <div class="timeline-text">戦後の同調・態度・不協和・偏見研究の急速な展開。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">第二の転換点</span>
+                  <div class="timeline-text">一九七〇〜八〇年代の社会的アイデンティティ理論と社会的認知研究。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">2015 年以降</span>
+                  <div class="timeline-text">再現性危機を契機にした open science と方法論改革、SNS・オンライン空間を含む集団間影響の再分析。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">必読の知識源</div>
+            <div class="field-block-body">
+              <div class="book-list">
+                <div class="book"><div class="book-mark"></div><div class="book-title">ザ・ソーシャル・アニマル</div><div class="book-author">Elliot Aronson</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">影響力の武器</div><div class="book-author">Robert B. Cialdini</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">偏見の心理</div><div class="book-author">Gordon W. Allport</div></div>
+              </div>
+              <p style="margin-top:18px;"></p>
+              <div class="essential">
+                <strong>外せない概念　|　社会的アイデンティティ理論。</strong>個人の自己理解と集団境界を同時に説明できる、唯一の枠組み。
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- ============= 行動経済学 ============= -->
+      <article class="field" id="behavioral">
+        <aside class="field-side">
+          <div class="field-num">領域 03</div>
+          <h3 class="field-name">行動経済学</h3>
+          <div class="field-name-en">Economics &amp; Psychology</div>
+          <blockquote class="field-quote">
+            人はなぜ完全合理的でないのに、なお予測可能な仕方で選ぶのか。
+          </blockquote>
+        </aside>
+        <div class="field-body">
+
+          <div class="field-block">
+            <div class="field-block-label">誕生の文脈</div>
+            <div class="field-block-body">
+              <p>合理的選択モデルや期待効用理論が現実の判断をうまく説明できないという不一致から始まった。一九五〇年代の <span class="ent is-person" data-tooltip="Economist and cognitive scientist">Herbert Simon</span> の限定合理性と、一九七〇年代の <span class="ent is-person" data-tooltip="Psychologist">Daniel Kahneman</span> と <span class="ent is-person" data-tooltip="Psychologist">Amos Tversky</span> のヒューリスティクス研究が基礎を作った。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">学問的位置</div>
+            <div class="field-block-body">
+              <p>ミクロ経済学の価格・インセンティブ分析を保持しつつ、心理学・意思決定科学・公共政策へ越境する位置にある。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">概念の層構造</div>
+            <div class="field-block-body">
+              <div class="layer-stack">
+                <div class="layer">
+                  <span class="layer-name">基盤層</span>
+                  <ul>
+                    <li>限定合理性</li>
+                    <li>参照点依存</li>
+                    <li>文脈依存的な選好</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">理論層</span>
+                  <ul>
+                    <li>ヒューリスティクスとバイアス</li>
+                    <li>プロスペクト理論</li>
+                    <li>損失回避</li>
+                    <li>フレーミング</li>
+                    <li>選択アーキテクチャ</li>
+                    <li>行動的公共政策</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">応用層</span>
+                  <ul>
+                    <li>デフォルト設計</li>
+                    <li>スラッジ監査</li>
+                    <li>現場実験</li>
+                    <li>メガスタディ</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">理論的系譜</div>
+            <div class="field-block-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <span class="timeline-era">創成期</span>
+                  <div class="timeline-text">Herbert Simon の限定合理性。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">1974</span>
+                  <div class="timeline-text">最初の大きな転換点となるヒューリスティクスとバイアス研究。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">1979</span>
+                  <div class="timeline-text">プロスペクト理論。経済学の価値理論を「期待値」から「参照点と損失回避」へ大きくずらす。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">2000 年代</span>
+                  <div class="timeline-text"><span class="ent is-person" data-tooltip="Economist">Richard Thaler</span> によって現実の消費・貯蓄・公共政策へ橋が架かり、ナッジが政策技法として普及。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">2015 年以降</span>
+                  <div class="timeline-text">ナッジ中心主義への反省 — 市民の主体性を重視する <em>boosting</em>、行政摩擦を減らす <em>sludge audits</em>、大規模比較で有効介入を探る <em>megastudy</em>、外的妥当性を意識した現場実験。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">必読の知識源</div>
+            <div class="field-block-body">
+              <div class="book-list">
+                <div class="book"><div class="book-mark"></div><div class="book-title">ファスト＆スロー</div><div class="book-author">Daniel Kahneman</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">実践行動経済学</div><div class="book-author">Thaler &amp; Sunstein, "Nudge"</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">行動経済学の逆襲</div><div class="book-author">Richard H. Thaler, "Misbehaving"</div></div>
+              </div>
+              <p style="margin-top:18px;"></p>
+              <div class="essential">
+                <strong>外せない一本　|　プロスペクト理論。</strong>経済学の価値理論を、期待値の合理計算から参照点と損失回避へ大きくずらした転回点。
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ============================== PART III — ORGANIZATION ============================== -->
+  <section class="section" id="organization">
+    <div class="section-head">
+      <div>
+        <div class="section-num"><strong>III</strong> · 集</div>
+      </div>
+      <div>
+        <h2 class="section-title">組織・知識・変化を扱う四領域</h2>
+        <div class="section-sub">Four fields on collective persistence and change</div>
+      </div>
+    </div>
+
+    <div class="fields-intro">— 組織論／ナレッジマネジメント／学習する組織／システム思考</div>
+
+    <div class="fields">
+
+      <!-- ============= 組織論 ============= -->
+      <article class="field" id="organization-theory">
+        <aside class="field-side">
+          <div class="field-num">領域 04</div>
+          <h3 class="field-name">組織論</h3>
+          <div class="field-name-en">Organization Theory</div>
+          <blockquote class="field-quote">
+            組織はなぜその形をとり、その形はなぜ生き残り・権力・正当性・変化可能性を左右するのか。
+          </blockquote>
+        </aside>
+        <div class="field-body">
+
+          <div class="field-block">
+            <div class="field-block-label">誕生の文脈</div>
+            <div class="field-block-body">
+              <p>企業や行政組織の巨大化に伴い、古典的管理論や人間関係論だけでは説明しきれない組織‐環境関係を理論化する必要から、一九五〇〜七〇年代に独立した研究領域として固まった。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">学問的位置</div>
+            <div class="field-block-body">
+              <p>社会学・経済学・政治学・戦略論の結節点。組織を「意思決定の場」「資源依存の場」「制度に埋め込まれた存在」として複眼的に扱う。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">概念の層構造</div>
+            <div class="field-block-body">
+              <div class="layer-stack">
+                <div class="layer">
+                  <span class="layer-name">基盤層</span>
+                  <ul>
+                    <li>開放システム</li>
+                    <li>限定合理性とルーティン</li>
+                    <li>環境・権力・正当性への埋め込み</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">理論層</span>
+                  <ul>
+                    <li>企業の行動理論</li>
+                    <li>コンティンジェンシー理論</li>
+                    <li>資源依存理論</li>
+                    <li>取引コスト理論</li>
+                    <li>制度理論</li>
+                    <li>個体群生態学</li>
+                    <li>変化対応論</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">応用層</span>
+                  <ul>
+                    <li>組織設計</li>
+                    <li>提携・ネットワーク設計</li>
+                    <li>ステークホルダー分析</li>
+                    <li>変革ガバナンス</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">理論的系譜</div>
+            <div class="field-block-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <span class="timeline-era">創成期</span>
+                  <div class="timeline-text">先駆者は <span class="ent is-person" data-tooltip="Organization theorist">James G. March</span> と <span class="ent is-person" data-tooltip="Economist and cognitive scientist">Herbert Simon</span>。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">1960〜70</span>
+                  <div class="timeline-text">第一の転換点 — コンティンジェンシー理論が組織設計研究を席巻。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">1977〜</span>
+                  <div class="timeline-text">第二の転換点 — 個体群生態学・新制度派・資源依存・取引コストが台頭。適応だけでなく <em>選択・正当化・制約</em> を前景化。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">2015 年以降</span>
+                  <div class="timeline-text">変化への組織応答を timing・ambivalence・感情・デジタル環境から捉え直す研究。ソーシャルメディアやデジタル化が仕事と境界を変える研究。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">必読の知識源</div>
+            <div class="field-block-body">
+              <div class="book-list">
+                <div class="book"><div class="book-mark"></div><div class="book-title">経営者の役割</div><div class="book-author">Chester I. Barnard</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">企業の行動理論</div><div class="book-author">Cyert &amp; March</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">制度と文化</div><div class="book-author">佐藤郁哉・山田真茂留</div></div>
+              </div>
+              <p style="margin-top:18px;"></p>
+              <div class="essential">
+                <strong>外せない概念　|　限定合理性。</strong>個人の合理性ではなく、組織の意思決定条件に着目するための土台。
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- ============= ナレッジマネジメント ============= -->
+      <article class="field" id="km">
+        <aside class="field-side">
+          <div class="field-num">領域 05</div>
+          <h3 class="field-name">ナレッジマネジメント</h3>
+          <div class="field-name-en">Knowledge Management</div>
+          <blockquote class="field-quote">
+            組織は知識をどう創り、どう共有し、どう蓄え、どう更新すれば、競争力と学習能力を失わないか。
+          </blockquote>
+        </aside>
+        <div class="field-body">
+
+          <div class="field-block">
+            <div class="field-block-label">誕生の文脈</div>
+            <div class="field-block-body">
+              <p>知識労働・イノベーション・国際競争が経営課題の中心に浮上した一九八〇年代末〜九〇年代。哲学的には <span class="ent is-person" data-tooltip="Philosopher of science">Michael Polanyi</span> の暗黙知、経営学的には <span class="ent is-person" data-tooltip="Management scholar">野中郁次郎</span> の知識創造論が強い出発点となった。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">学問的位置</div>
+            <div class="field-block-body">
+              <p>組織論・情報システム・イノベーション研究の境界。単なる情報管理と異なって「知識の変換と共同実践」に重心を置く。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">概念の層構造</div>
+            <div class="field-block-body">
+              <div class="layer-stack">
+                <div class="layer">
+                  <span class="layer-name">基盤層</span>
+                  <ul>
+                    <li>知識はデータではない</li>
+                    <li>暗黙知と形式知の往還</li>
+                    <li>知識は社会的・状況的である</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">理論層</span>
+                  <ul>
+                    <li>SECI モデル</li>
+                    <li>知識ベースの企業観</li>
+                    <li>コミュニティ・オブ・プラクティス</li>
+                    <li>知識移転</li>
+                    <li>知識共有ネットワーク</li>
+                    <li>AI 支援知識創造</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">応用層</span>
+                  <ul>
+                    <li>レッスンズ・ラーンド</li>
+                    <li>実践共同体</li>
+                    <li>知識リポジトリ</li>
+                    <li>AI による暗黙知の外化支援</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">理論的系譜</div>
+            <div class="field-block-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <span class="timeline-era">創成期</span>
+                  <div class="timeline-text">Polanyi の暗黙知論。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">1994/95</span>
+                  <div class="timeline-text">第一の転換点 — 野中の論文と『知識創造企業』が「知識創造」を経営理論の中心に押し出す。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">1990s 末〜2000s</span>
+                  <div class="timeline-text">第二の転換点 — Communities of Practice や knowledge transfer 研究が広がる。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">2015 年以降</span>
+                  <div class="timeline-text">SECI を土台に AI が tacit/explicit conversion をどう補助するか。GenAI が KM の枠組み自体を再記述するかが前線。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">必読の知識源</div>
+            <div class="field-block-body">
+              <div class="book-list">
+                <div class="book"><div class="book-mark"></div><div class="book-title">知識創造企業</div><div class="book-author">野中郁次郎・竹内弘高</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">暗黙知の次元</div><div class="book-author">Michael Polanyi</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">コミュニティ・オブ・プラクティス</div><div class="book-author">Etienne Wenger</div></div>
+              </div>
+              <p style="margin-top:18px;"></p>
+              <div class="essential">
+                <strong>外せない一本　|　野中の 1994 年論文。</strong>暗黙知と形式知の対話から組織的知識が生まれる、と論じた決定打。
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- ============= 学習する組織 ============= -->
+      <article class="field" id="learning">
+        <aside class="field-side">
+          <div class="field-num">領域 06</div>
+          <h3 class="field-name">学習する組織</h3>
+          <div class="field-name-en">The Learning Organization</div>
+          <blockquote class="field-quote">
+            組織はどうすれば、誤差修正だけでなく前提の見直しまで行いながら、集団として学び続けられるのか。
+          </blockquote>
+        </aside>
+        <div class="field-body">
+
+          <div class="field-block">
+            <div class="field-block-label">誕生の文脈</div>
+            <div class="field-block-body">
+              <p>個人が優秀でも組織は同じ失敗を繰り返す、という問題意識から。組織学習研究が一九七〇年代後半に立ち上がり、一九九〇年代に理念と実践の枠組みとして定式化された。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">学問的位置</div>
+            <div class="field-block-body">
+              <p>組織論・組織学習・組織開発・ナレッジマネジメント・システム思考の交差点。説明理論よりも、設計原理としての性格が強い。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">概念の層構造</div>
+            <div class="field-block-body">
+              <div class="layer-stack">
+                <div class="layer">
+                  <span class="layer-name">基盤層</span>
+                  <ul>
+                    <li>エラーは学習資源である</li>
+                    <li>学習は多層的に生じる</li>
+                    <li>行動を支配するのはメンタルモデル</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">理論層</span>
+                  <ul>
+                    <li>単一ループ学習</li>
+                    <li>二重ループ学習</li>
+                    <li>五つのディシプリン</li>
+                    <li>チーム学習</li>
+                    <li>心理的安全性</li>
+                    <li>チーミング</li>
+                    <li>組織的アンラーニング</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">応用層</span>
+                  <ul>
+                    <li>ふりかえり</li>
+                    <li>ブレームレス・レビュー</li>
+                    <li>越境型協働</li>
+                    <li>学習インフラ設計</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">理論的系譜</div>
+            <div class="field-block-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <span class="timeline-era">創成期</span>
+                  <div class="timeline-text">先駆者は <span class="ent is-person" data-tooltip="Organizational theorist">Chris Argyris</span> と <span class="ent is-person" data-tooltip="Organizational theorist">Donald Schön</span>。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">第一の転換点</span>
+                  <div class="timeline-text">二重ループ学習の提示。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">第二の転換点</span>
+                  <div class="timeline-text"><span class="ent is-person" data-tooltip="Systems scientist">Peter Senge</span> が五つのディシプリンで「学習する組織」を実践概念として広めた。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">第三の転換点</span>
+                  <div class="timeline-text"><span class="ent is-person" data-tooltip="Scholar of organizational learning">Amy Edmondson</span> が心理的安全性と team learning を結びつけた。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">2015 年以降</span>
+                  <div class="timeline-text">デジタル変革下の learning infrastructure、旧来知識を意図的に捨てる unlearning、AI 導入を learning tension として扱う研究。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">必読の知識源</div>
+            <div class="field-block-body">
+              <div class="book-list">
+                <div class="book"><div class="book-mark"></div><div class="book-title">学習する組織</div><div class="book-author">Peter Senge</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">Organizational Learning II</div><div class="book-author">Argyris &amp; Schön</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">チームが機能するとはどういうことか</div><div class="book-author">Amy Edmondson</div></div>
+              </div>
+              <p style="margin-top:18px;"></p>
+              <div class="essential">
+                <strong>外せない概念　|　二重ループ学習。</strong>エラーを直すだけでなく、そのエラーを生んだ前提・規範・目標まで問い直す視座。
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+      <!-- ============= システム思考 ============= -->
+      <article class="field" id="systems">
+        <aside class="field-side">
+          <div class="field-num">領域 07</div>
+          <h3 class="field-name">システム思考</h3>
+          <div class="field-name-en">Systems Thinking</div>
+          <blockquote class="field-quote">
+            相互依存する要素、遅れ、循環因果、目的の組み合わせが、なぜ反復するパターンや意図せざる結果を生むのか。
+          </blockquote>
+        </aside>
+        <div class="field-body">
+
+          <div class="field-block">
+            <div class="field-block-label">誕生の文脈</div>
+            <div class="field-block-body">
+              <p>部分最適では複雑な現象を説明できない、という問題意識から。二〇世紀中葉に <span class="ent is-person" data-tooltip="Biologist and systems theorist">Ludwig von Bertalanffy</span> の一般システム理論、<span class="ent is-person" data-tooltip="Systems scientist">Jay W. Forrester</span> の system dynamics、のちに <span class="ent is-person" data-tooltip="Systems thinker">Peter Checkland</span> の soft systems が形成された。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">学問的位置</div>
+            <div class="field-block-body">
+              <p>工学・生態学・公共政策・組織学習・経営の境界を横断し、「要素」よりも「関係」と「動学」を主語にする。</p>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">概念の層構造</div>
+            <div class="field-block-body">
+              <div class="layer-stack">
+                <div class="layer">
+                  <span class="layer-name">基盤層</span>
+                  <ul>
+                    <li>全体性と相互依存</li>
+                    <li>遅れを含む動的複雑性</li>
+                    <li>構造が行動を生む</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">理論層</span>
+                  <ul>
+                    <li>一般システム理論</li>
+                    <li>システム・ダイナミクス</li>
+                    <li>フィードバックループ</li>
+                    <li>ストックとフロー</li>
+                    <li>ソフトシステム方法論</li>
+                    <li>システム原型</li>
+                    <li>レバレッジポイント</li>
+                  </ul>
+                </div>
+                <div class="layer">
+                  <span class="layer-name">応用層</span>
+                  <ul>
+                    <li>因果ループ図</li>
+                    <li>シミュレーション</li>
+                    <li>ステークホルダー・マッピング</li>
+                    <li>政策設計</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">理論的系譜</div>
+            <div class="field-block-body">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <span class="timeline-era">創成期</span>
+                  <div class="timeline-text">Bertalanffy と Forrester。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">第一の転換点</span>
+                  <div class="timeline-text">system dynamics による複雑系の定量化。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">第二の転換点</span>
+                  <div class="timeline-text">Checkland による「定義が曖昧な人間的問題」への適用。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">第三の転換点</span>
+                  <div class="timeline-text"><span class="ent is-person" data-tooltip="Systems analyst">Donella Meadows</span> が leverage points によって介入の階層を示した。</div>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-era">2015 年以降</span>
+                  <div class="timeline-text">政策・公衆衛生・持続可能性へ operationalize。feedback loops、stakeholder engagement、strategic leverage points を実装単位として扱う研究。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-block">
+            <div class="field-block-label">必読の知識源</div>
+            <div class="field-block-body">
+              <div class="book-list">
+                <div class="book"><div class="book-mark"></div><div class="book-title">世界はシステムで動く</div><div class="book-author">Donella Meadows</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">一般システム理論</div><div class="book-author">Ludwig von Bertalanffy</div></div>
+                <div class="book"><div class="book-mark"></div><div class="book-title">新しいシステムアプローチ</div><div class="book-author">Peter Checkland</div></div>
+              </div>
+              <p style="margin-top:18px;"></p>
+              <div class="essential">
+                <strong>外せない概念　|　レバレッジポイント。</strong>介入の良し悪しを「どこに手を入れるか」で比較する、設計者のための座標。
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ============================== PART IV — TRAVELING CONCEPTS ============================== -->
+  <section class="section" id="concepts">
+    <div class="section-head">
+      <div>
+        <div class="section-num"><strong>IV</strong> · 橋</div>
+      </div>
+      <div>
+        <h2 class="section-title">旅する概念</h2>
+        <div class="section-sub">Five concepts that travel between fields</div>
+      </div>
+    </div>
+
+    <div class="concepts">
+
+      <article class="concept">
+        <header class="concept-head">
+          <div class="concept-kanji">学習</div>
+          <div class="concept-en">LEARNING</div>
+          <span class="concept-tag">橋 · 01</span>
+        </header>
+        <div class="concept-body">
+          <p>
+            認知心理学では、学習は注意・ワーキングメモリ・一般化を通じた内部表象の更新として現れる。
+            社会心理学では、規範・同一視・相互作用を通じた社会的取り込みへ拡張される。
+            学習する組織ではそこから一段進み、単なる誤差修正ではなく前提の改訂を含む二重ループ学習へと変わる。
+            ナレッジマネジメントでは SECI の internalization と socialization によって共同実践へ埋め込まれ、
+            システム思考では adaptive learning を生むフィードバックループの問題として再定式化される。
+            行動経済学はその途中で「人は学んでもなお系統的に誤る」という制約条件を突きつける。
+          </p>
+          <div class="concept-trail">
+            <div class="trail-step"><span class="name">認知心理学</span><span>表象の更新</span></div>
+            <div class="trail-step"><span class="name">社会心理学</span><span>同一視</span></div>
+            <div class="trail-step"><span class="name">学習する組織</span><span>二重ループ</span></div>
+            <div class="trail-step"><span class="name">KM</span><span>SECI</span></div>
+            <div class="trail-step"><span class="name">システム思考</span><span>適応ループ</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="concept">
+        <header class="concept-head">
+          <div class="concept-kanji">バイアス・盲点</div>
+          <div class="concept-en">BIAS &amp; BLINDSPOT</div>
+          <span class="concept-tag">橋 · 02</span>
+        </header>
+        <div class="concept-body">
+          <p>
+            認知心理学では、注意・記憶・予測の容量制約や構成性として現れる。
+            行動経済学はそこから合理的選択からの系統的逸脱を切り出す。
+            社会心理学では、盲点はもはや個人の頭の中ではなく、同調、内集団びいき、状況への埋め込みとして現れる。
+            学習する組織はそれを「メンタルモデル」「熟練した無能」「単一ループ」へ翻訳し、
+            システム思考は「イベントへの固着」「遅れの見落とし」「境界設定の誤り」として構造的に捉え直す。
+          </p>
+          <p style="color: var(--accent-deep); font-weight: 500;">
+            つまり盲点は、個人の欠陥ではなく、情報処理・社会関係・組織ルーティン・因果構造が重なったところで生まれる。
+          </p>
+          <div class="concept-trail">
+            <div class="trail-step"><span class="name">認知心理学</span><span>容量制約</span></div>
+            <div class="trail-step"><span class="name">行動経済学</span><span>系統的逸脱</span></div>
+            <div class="trail-step"><span class="name">社会心理学</span><span>同調・内集団</span></div>
+            <div class="trail-step"><span class="name">学習する組織</span><span>熟練した無能</span></div>
+            <div class="trail-step"><span class="name">システム思考</span><span>境界設定</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="concept">
+        <header class="concept-head">
+          <div class="concept-kanji">集団・組織</div>
+          <div class="concept-en">GROUP &amp; ORGANIZATION</div>
+          <span class="concept-tag">橋 · 03</span>
+        </header>
+        <div class="concept-body">
+          <p>
+            社会心理学ではまず規範・役割・アイデンティティの場として理解される。
+            組織論はそこに持続性、目的、権力、資源依存、正当性を加え、集団を「環境にさらされた設計体」として読み替える。
+            ナレッジマネジメントはさらに、組織を知識の保管庫ではなく知識創造の場と見なし、
+            <em>誰が何を知っているか</em>よりも、<em>どのように知が循環し変換されるか</em>を問う。
+            学習する組織はその循環に反省・対話・共有ビジョンを埋め込み、
+            システム思考は組織をより大きい制度・市場・政策環境にネストした動学系として扱う。
+          </p>
+          <div class="concept-trail">
+            <div class="trail-step"><span class="name">社会心理学</span><span>規範の場</span></div>
+            <div class="trail-step"><span class="name">組織論</span><span>設計体</span></div>
+            <div class="trail-step"><span class="name">KM</span><span>知識創造の場</span></div>
+            <div class="trail-step"><span class="name">学習する組織</span><span>反省と対話</span></div>
+            <div class="trail-step"><span class="name">システム思考</span><span>ネストした動学系</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="concept">
+        <header class="concept-head">
+          <div class="concept-kanji">暗黙知・形式知</div>
+          <div class="concept-en">TACIT &amp; EXPLICIT</div>
+          <span class="concept-tag">橋 · 04</span>
+        </header>
+        <div class="concept-body">
+          <p>
+            哲学的には Polanyi が切り開き、ナレッジマネジメントが中心概念へ育てた。
+            認知心理学から見れば、すべての知が同じように言語化できない理由は、処理の自動化や表象の分散性にある。
+            社会心理学では、暗黙知は規範・共有レパートリー・実践の中で伝わる。
+            学習する組織では、メンタルモデルの可視化と対話がその橋渡しになる。
+            組織論はさらに、制度や文化を通じて「見えないが行動を方向づける知」としてそれを受け取る。
+            この概念は、個人内の未言語化から始まり、実践共同体、組織文化、制度環境へと外側へ旅する。
+          </p>
+          <div class="concept-trail">
+            <div class="trail-step"><span class="name">Polanyi</span><span>未言語化</span></div>
+            <div class="trail-step"><span class="name">認知心理学</span><span>自動化</span></div>
+            <div class="trail-step"><span class="name">社会心理学</span><span>共有レパートリー</span></div>
+            <div class="trail-step"><span class="name">KM</span><span>SECI</span></div>
+            <div class="trail-step"><span class="name">組織論</span><span>制度・文化</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="concept">
+        <header class="concept-head">
+          <div class="concept-kanji">フィードバックループ</div>
+          <div class="concept-en">FEEDBACK LOOP</div>
+          <span class="concept-tag">橋 · 05 ／ 共通語彙</span>
+        </header>
+        <div class="concept-body">
+          <p>
+            システム思考では最も形式化された中心概念であり、強化ループと均衡ループ、遅れ、レバレッジポイントを通じて説明される。
+            学習する組織では single-loop と double-loop に翻訳され、行動修正だけでなく規範修正の問題になる。
+            組織論では組織‐環境適合や isomorphism の反復として現れ、
+            社会心理学では規範が自己強化し、アイデンティティが集団行動を戻し作用させる循環として働く。
+            行動経済学では choice architecture と sludge が反復選択のパターンを変え、
+            認知心理学では attention と working memory の相互作用が次の行為を準備するミクロ循環として現れる。
+          </p>
+          <p style="color: var(--accent-deep); font-weight: 500;">
+            フィードバックループは、七領域を統一的に読ませる最重要の共通語彙である。
+          </p>
+          <div class="concept-trail">
+            <div class="trail-step"><span class="name">認知心理学</span><span>注意×WM</span></div>
+            <div class="trail-step"><span class="name">行動経済学</span><span>choice arch.</span></div>
+            <div class="trail-step"><span class="name">社会心理学</span><span>規範の自己強化</span></div>
+            <div class="trail-step"><span class="name">組織論</span><span>isomorphism</span></div>
+            <div class="trail-step"><span class="name">学習する組織</span><span>single/double</span></div>
+            <div class="trail-step"><span class="name">システム思考</span><span>強化と均衡</span></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ============================== PART V — INFLUENCE MAP ============================== -->
+  <section class="section" id="influence">
+    <div class="section-head">
+      <div>
+        <div class="section-num"><strong>V</strong> · 流</div>
+      </div>
+      <div>
+        <h2 class="section-title">領域間の影響マップ</h2>
+        <div class="section-sub">How these fields fed each other</div>
+      </div>
+    </div>
+
+    <div class="influence-grid">
+      <div class="influence-prose">
+        <p>
+          もっとも太い理論的影響線は、<strong>認知心理学→行動経済学</strong>である。
+          認知心理学が明らかにした容量制約、注意配分、判断の構成性は、行動経済学に入ると
+          「限定合理性」「ヒューリスティクス」「損失回避」「フレーミング」という、経済行動の異常ではなくむしろ通常運転の選択原理として読み替えられる。
+          ここで起きたのは、心理学的事実の借用ではなく、経済学の人間観そのものの再設計である。
+        </p>
+        <p>
+          次の太い線は、<strong>社会心理学→行動経済学</strong>、および<strong>社会心理学→組織論</strong>である。
+          社会心理学は、選択が孤立個人ではなく規範・比較・集団境界の中で起きることを示した。
+          これが行動経済学では social preferences や norms-based intervention の足場になり、
+          組織論では組織の正当性、文化、制度同型化を理解する入口になった。
+          個人の選択を説明する学問が、ここで初めて「他者がいるからこその選択」へと厚みを増す。
+        </p>
+        <p>
+          <strong>組織論→ナレッジマネジメント→学習する組織</strong>の線は、「構造」から「知識」へ、さらに「変化能力」へと進む川筋である。
+          組織論は、組織が資源や正当性に依存しつつ環境へ適応する存在であることを示した。
+          ナレッジマネジメントはその適応の中身を「知の創造・共有・変換」として具体化した。
+          学習する組織はさらにそれを理念化し、どのような対話・安全性・反省があれば知識循環が継続学習へ転化するかを問う。
+        </p>
+        <p>
+          <strong>システム思考</strong>は、これら六領域に上から被さる「共通文法」として働く。
+          認知の循環、規範強化、choice architecture、適合と同型化、知識変換、単一／二重ループを、
+          すべて feedback、delay、structure、leverage という言語で再記述できるからである。
+          逆に言えば、システム思考だけ先に学ぶと中身が空疎になりやすく、他の六領域を流れる具体的メカニズムを受け取って初めて厚みを持つ。
+        </p>
+      </div>
+
+      <div class="influence-diagram">
+        <h4>FLOW DIAGRAM</h4>
+        <svg class="influence-svg" viewBox="0 0 400 480">
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0,0 L10,5 L0,10 Z" fill="#b13427"/>
+            </marker>
+            <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0,0 L10,5 L0,10 Z" fill="#2a4858"/>
+            </marker>
+          </defs>
+
+          <g font-family="Noto Serif JP, serif" font-size="13" font-weight="600" text-anchor="middle">
+            <g>
+              <rect x="30" y="30" width="130" height="38" rx="2" fill="#efe8d6" stroke="#b13427"/>
+              <text x="95" y="55" fill="#1c1814">認知心理学</text>
+            </g>
+            <g>
+              <rect x="240" y="30" width="130" height="38" rx="2" fill="#efe8d6" stroke="#b13427"/>
+              <text x="305" y="55" fill="#1c1814">社会心理学</text>
+            </g>
+            <g>
+              <rect x="135" y="130" width="130" height="38" rx="2" fill="#efe8d6" stroke="#b13427"/>
+              <text x="200" y="155" fill="#1c1814">行動経済学</text>
+            </g>
+            <g>
+              <rect x="240" y="220" width="130" height="38" rx="2" fill="#efe8d6" stroke="#2a4858"/>
+              <text x="305" y="245" fill="#1c1814">組織論</text>
+            </g>
+            <g>
+              <rect x="240" y="290" width="130" height="38" rx="2" fill="#efe8d6" stroke="#2a4858"/>
+              <text x="305" y="315" fill="#1c1814" font-size="11.5">ナレッジマネジメント</text>
+            </g>
+            <g>
+              <rect x="240" y="360" width="130" height="38" rx="2" fill="#efe8d6" stroke="#2a4858"/>
+              <text x="305" y="385" fill="#1c1814">学習する組織</text>
+            </g>
+            <g>
+              <rect x="80" y="420" width="240" height="40" rx="2" fill="#1c1814" stroke="#a37b1f"/>
+              <text x="200" y="446" fill="#efe8d6">システム思考　|　共通文法</text>
+            </g>
+          </g>
+
+          <g fill="none" stroke="#b13427" stroke-width="1.4">
+            <path d="M 95 70 Q 130 100 165 130" marker-end="url(#arr)"/>
+            <path d="M 280 70 Q 245 100 220 130" marker-end="url(#arr)"/>
+            <path d="M 305 70 L 305 220" marker-end="url(#arr)" stroke="#2a4858"/>
+          </g>
+          <g fill="none" stroke="#2a4858" stroke-width="1.4">
+            <path d="M 305 258 L 305 290" marker-end="url(#arr2)"/>
+            <path d="M 305 328 L 305 360" marker-end="url(#arr2)"/>
+          </g>
+          <g fill="none" stroke="#a37b1f" stroke-width="1" stroke-dasharray="3 3">
+            <path d="M 95 70 Q 40 240 80 440"/>
+            <path d="M 200 168 Q 150 290 110 430"/>
+            <path d="M 305 398 Q 320 430 290 440"/>
+          </g>
+
+          <g font-family="Noto Sans JP" font-size="9" fill="#6e6452">
+            <line x1="20" y1="475" x2="40" y2="475" stroke="#b13427" stroke-width="1.4"/>
+            <text x="44" y="478">影響</text>
+            <line x1="80" y1="475" x2="100" y2="475" stroke="#a37b1f" stroke-dasharray="3 3"/>
+            <text x="104" y="478">共通文法</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="summary-pull">
+      この影響マップを一行で圧縮するとこうなる ──
+      <strong>認知の制約がバイアスを生み</strong>、バイアスは
+      <strong>集団規範で増幅され</strong>、集団規範は
+      <strong>組織ルーティンとなり</strong>、ルーティンは
+      <strong>知識システムを構成し</strong>、その知識システムが
+      <strong>学習とフィードバックを通じて再生産される</strong>。
+      七領域は別々の学問ではあるが、扱っている対象は同じ現実の異なる縮尺なのである。
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ============================== PART VI — NEXT ============================== -->
+  <section class="section" id="next">
+    <div class="section-head">
+      <div>
+        <div class="section-num"><strong>VI</strong> · 行</div>
+      </div>
+      <div>
+        <h2 class="section-title">学習者の現在地と次の一歩</h2>
+        <div class="section-sub">Three reading paths</div>
+      </div>
+    </div>
+
+    <div class="paths">
+
+      <article class="path">
+        <div class="path-eyebrow">PATH A · 個から始める</div>
+        <h3 class="path-question">「人の誤判断」が気になっているなら。</h3>
+        <div class="path-route">
+          <span class="step">認知心理学</span><span class="arrow">→</span>
+          <span class="step">社会心理学</span><span class="arrow">→</span>
+          <span class="step">行動経済学</span>
+        </div>
+        <p class="path-text">
+          まず注意・記憶・一般化の限界を掴む。次に「なぜ他者は判断を歪めるのか」を学ぶ。
+          そのあとで行動経済学へ入ると、個人の誤りと社会的文脈が、実際の選択設計や政策介入にどう翻訳されるかが見える。
+        </p>
+      </article>
+
+      <article class="path">
+        <div class="path-eyebrow">PATH B · 集から始める</div>
+        <h3 class="path-question">「組織が同じ失敗を繰り返す理由」が気になっているなら。</h3>
+        <div class="path-route">
+          <span class="step">組織論</span><span class="arrow">→</span>
+          <span class="step">学習する組織</span><span class="arrow">→</span>
+          <span class="step">KM</span>
+        </div>
+        <p class="path-text">
+          組織論で環境適合・資源依存・正当性の圧力を押さえる。
+          学習する組織に進むと、なぜ正しい情報があっても前提が変わらないのかが分かる。
+          さらに KM へ進むと、その停滞が知識の流れ・実践共同体・暗黙知の詰まりとして具体化される。
+        </p>
+      </article>
+
+      <article class="path">
+        <div class="path-eyebrow">PATH C · 構造から始める</div>
+        <h3 class="path-question">「複雑な現場でどこに手を打てばよいか」を知りたいなら。</h3>
+        <div class="path-route">
+          <span class="step">システム思考</span><span class="arrow">→</span>
+          <span class="step">学習する組織</span><span class="arrow">→</span>
+          <span class="step">行動経済学</span><span class="arrow">→</span>
+          <span class="step">社会心理学</span>
+        </div>
+        <p class="path-text">
+          システム思考を先に置く。ただし抽象語で終わらせず、学習する組織で反省と対話を、行動経済学で小さな介入設計を、社会心理学で規範とアイデンティティを補う。
+          そうすれば、レバレッジポイントは図解ではなく、「誰の前提をどう変え、どのループを弱め、どの知識変換を強めるか」という実践上の問いに変わる。
+        </p>
+      </article>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div><span class="seal"></span>知識地図 · A KNOWLEDGE CARTOGRAPHY</div>
+    <div>七領域 ／ 五概念 ／ 三経路 ／ 一つの現実</div>
+  </footer>
+
+</main>
+
+<script>
+  // theme toggle
+  const themeBtn = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  function applyTheme(t) {
+    root.dataset.theme = t;
+    themeBtn.textContent = t === 'dark' ? 'LIGHT' : 'DARK';
+    try { localStorage.setItem('km-theme', t); } catch(e) {}
+  }
+  let saved = 'light';
+  try { saved = localStorage.getItem('km-theme') || 'light'; } catch(e) {}
+  applyTheme(saved);
+  themeBtn.addEventListener('click', () => {
+    applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
+  });
+
+  // scroll progress
+  const prog = document.getElementById('progress');
+  function updateProgress() {
+    const h = document.documentElement;
+    const pct = (h.scrollTop || document.body.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    prog.style.width = Math.max(0, Math.min(100, pct)) + '%';
+  }
+  document.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // smooth scroll for in-page anchors accounting for sticky nav
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.scrollY - 70;
+      window.scrollTo({ top, behavior: 'smooth' });
+      history.replaceState(null, '', '#' + id);
+    });
+  });
+</script>
+</body>
+</html>
