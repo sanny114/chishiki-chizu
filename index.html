@@ -548,6 +548,22 @@ article.field:last-child { border-bottom: 1px solid var(--rule); }
 }
 .essential strong { color: var(--accent-deep); font-weight: 600; }
 
+.field-deep-link {
+  display: inline-block;
+  margin-top: 18px;
+  font-family: var(--sans);
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: var(--indigo);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--indigo);
+  padding-bottom: 1px;
+  transition: color .2s, border-color .2s;
+}
+.field-deep-link:hover { color: var(--accent); border-color: var(--accent); }
+.field-deep-link::after { content: " →"; }
+
 /* timeline */
 .timeline {
   display: grid;
@@ -1109,6 +1125,7 @@ article.field:last-child { border-bottom: 1px solid var(--rule); }
               <div class="essential">
                 <strong>外せない概念　|　ワーキングメモリ。</strong>認知を静的な保存庫ではなく、行為を支える能動的制御系として捉え直した。
               </div>
+              <a class="field-deep-link" href="ninchi-shinrigaku.html">認知心理学を深掘りする</a>
             </div>
           </div>
 
@@ -1213,6 +1230,7 @@ article.field:last-child { border-bottom: 1px solid var(--rule); }
               <div class="essential">
                 <strong>外せない概念　|　社会的アイデンティティ理論。</strong>個人の自己理解と集団境界を同時に説明できる、唯一の枠組み。
               </div>
+              <a class="field-deep-link" href="shakai-shinrigaku.html">社会心理学を深掘りする</a>
             </div>
           </div>
 
