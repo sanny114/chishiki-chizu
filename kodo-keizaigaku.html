@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>行動経済学 深掘りガイド｜七領域をつなぐ知識地図</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&family=Shippori+Mincho:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --paper:        #efe8d6;
+  --paper-2:      #e7dec7;
+  --paper-deep:   #ddd0b1;
+  --ink:          #1c1814;
+  --ink-2:        #2f2820;
+  --muted:        #6e6452;
+  --muted-2:      #998b71;
+  --rule:         #c5b793;
+  --rule-soft:    #d8caa9;
+  --accent:       #b13427;
+  --accent-deep:  #84251c;
+  --indigo:       #2a4858;
+  --gold:         #a37b1f;
+
+  --serif: "Shippori Mincho", "Noto Serif JP", "YuMincho", "Hiragino Mincho ProN", serif;
+  --sans:  "Noto Sans JP", "Hiragino Kaku Gothic ProN", "YuGothic", system-ui, sans-serif;
+
+  --pad-page: clamp(20px, 4vw, 56px);
+}
+
+[data-theme="dark"] {
+  --paper:        #15120e;
+  --paper-2:      #1c1813;
+  --paper-deep:   #251f17;
+  --ink:          #ece2c8;
+  --ink-2:        #d6cab0;
+  --muted:        #8e826a;
+  --muted-2:      #6b6150;
+  --rule:         #3a3225;
+  --rule-soft:    #2a2419;
+  --accent:       #d2503e;
+  --accent-deep:  #a13a2c;
+  --indigo:       #6f96a9;
+  --gold:         #c9a14a;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-feature-settings: "palt";
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 0%, color-mix(in oklab, var(--paper-2) 70%, transparent) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 100%, color-mix(in oklab, var(--paper-deep) 55%, transparent) 0%, transparent 70%),
+    var(--paper);
+  min-height: 100vh;
+}
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none; opacity: .35; z-index: 0;
+  background-image:
+    radial-gradient(rgba(0,0,0,.025) 1px, transparent 1px),
+    radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 3px 3px, 5px 5px;
+  background-position: 0 0, 1px 2px;
+  mix-blend-mode: multiply;
+}
+[data-theme="dark"] body::before { mix-blend-mode: screen; opacity: .15; }
+main, header, footer, nav { position: relative; z-index: 1; }
+
+.scroll-progress {
+  position: fixed; top: 0; left: 0;
+  height: 2px; background: var(--accent);
+  z-index: 100; width: 0%;
+  transition: width .08s linear;
+}
+
+.page { max-width: 1080px; margin: 0 auto; padding: 0 var(--pad-page); }
+
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--rule) 20%, var(--rule) 80%, transparent);
+  margin: clamp(40px, 6vw, 72px) 0;
+  border: 0;
+}
+
+.topnav {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in oklab, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.topnav-inner {
+  max-width: 1080px; margin: 0 auto;
+  padding: 14px var(--pad-page);
+  display: flex; align-items: center; gap: 16px;
+}
+.back-link {
+  font-family: var(--sans); font-size: 12px;
+  letter-spacing: .14em; color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color .15s, border-color .15s;
+}
+.back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.topnav-title {
+  font-family: var(--serif); font-size: 15px; font-weight: 600;
+  letter-spacing: .08em; color: var(--ink);
+}
+.topnav-links {
+  display: flex; gap: 20px; margin-left: auto;
+  font-family: var(--sans); font-size: 12px;
+  letter-spacing: .08em; color: var(--muted);
+}
+.topnav-links a {
+  color: inherit; text-decoration: none;
+  border-bottom: 1px solid transparent; padding-bottom: 2px;
+  transition: color .15s, border-color .15s;
+}
+.topnav-links a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+@media (max-width: 700px) { .topnav-links { display: none; } }
+.theme-toggle {
+  border: 1px solid var(--rule); background: transparent;
+  color: var(--muted); font-family: var(--sans);
+  font-size: 11px; letter-spacing: .14em;
+  padding: 6px 10px; border-radius: 2px; cursor: pointer;
+  transition: all .15s;
+}
+.theme-toggle:hover { color: var(--ink); border-color: var(--ink); }
+
+.hero {
+  padding: clamp(56px, 9vw, 120px) 0 clamp(36px, 5vw, 64px);
+  display: grid; gap: clamp(20px, 3vw, 40px);
+}
+.hero-breadcrumb {
+  font-family: var(--sans); font-size: 11px;
+  letter-spacing: .36em; color: var(--muted);
+  text-transform: uppercase;
+}
+.hero-title {
+  font-family: var(--serif); font-weight: 600;
+  font-size: clamp(36px, 6vw, 80px);
+  line-height: 1.1; letter-spacing: .02em; margin: 0;
+}
+.hero-title .accent { color: var(--accent); }
+.hero-en {
+  font-family: var(--sans); font-size: 12px;
+  letter-spacing: .32em; color: var(--muted);
+  text-transform: uppercase; margin-top: -8px;
+}
+.hero-lead {
+  max-width: 54ch;
+  font-size: clamp(15px, 1.4vw, 17.5px);
+  line-height: 2; color: var(--ink-2); margin: 0;
+}
+.hero-stats {
+  display: flex; gap: 24px; flex-wrap: wrap;
+  font-family: var(--sans); font-size: 11px;
+  letter-spacing: .16em; color: var(--muted);
+  padding-top: 20px; border-top: 1px solid var(--rule-soft);
+}
+.hero-stats .label { color: var(--muted-2); margin-right: 6px; }
+
+.section { padding: clamp(36px, 5vw, 60px) 0; }
+.section-head {
+  display: grid; grid-template-columns: 100px 1fr;
+  gap: 28px; align-items: baseline;
+  margin-bottom: clamp(32px, 4vw, 56px);
+  padding-bottom: 16px; border-bottom: 1px solid var(--rule);
+}
+@media (max-width: 640px) { .section-head { grid-template-columns: 1fr; gap: 6px; } }
+.section-num { font-family: var(--serif); font-size: 13px; letter-spacing: .28em; color: var(--accent); }
+.section-title {
+  font-family: var(--serif); font-weight: 600;
+  font-size: clamp(24px, 3.2vw, 40px);
+  line-height: 1.25; margin: 0;
+}
+.section-sub {
+  font-family: var(--sans); font-size: 11.5px;
+  letter-spacing: .22em; color: var(--muted);
+  text-transform: uppercase; margin-top: 6px;
+}
+
+.lens-prose p {
+  font-size: 16.5px; line-height: 2;
+  margin: 0 0 1.4em; color: var(--ink-2);
+  text-align: justify; text-justify: inter-character;
+  max-width: 68ch;
+}
+.lens-prose p:first-child::first-letter {
+  font-size: 3.2em; float: left; line-height: .9;
+  padding: 4px 10px 0 0; font-weight: 600; color: var(--accent);
+}
+
+.examples { display: grid; gap: 20px; margin-top: 32px; }
+.example {
+  display: grid; grid-template-columns: 3px 1fr;
+  gap: 0 20px; align-items: start;
+}
+.example-bar { background: var(--accent); height: 100%; border-radius: 2px; }
+.example:nth-child(2) .example-bar { background: var(--indigo); }
+.example:nth-child(3) .example-bar { background: var(--gold); }
+.example-content {}
+.example-label {
+  font-family: var(--sans); font-size: 10.5px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 6px; display: block;
+}
+.example:nth-child(2) .example-label { color: var(--indigo); }
+.example:nth-child(3) .example-label { color: var(--gold); }
+.example-scene {
+  font-size: 15.5px; color: var(--ink-2); margin: 0 0 .5em;
+  font-style: italic; line-height: 1.8;
+}
+.example-analysis {
+  font-size: 14.5px; line-height: 1.9; color: var(--ink-2);
+  background: var(--paper-2); border-radius: 3px;
+  padding: 12px 16px; margin: 0;
+}
+
+.flow {
+  display: flex; flex-wrap: wrap;
+  align-items: center; gap: 8px;
+  margin-top: 32px; padding: 24px;
+  background: var(--paper-2); border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+.flow-label {
+  font-family: var(--sans); font-size: 10px;
+  letter-spacing: .18em; color: var(--muted);
+  text-transform: uppercase; width: 100%; margin-bottom: 4px;
+}
+.flow-step {
+  font-family: var(--sans); font-size: 12px;
+  background: var(--paper); border: 1px solid var(--rule-soft);
+  padding: 6px 12px; border-radius: 2px;
+  color: var(--ink); white-space: nowrap;
+}
+.flow-arrow { color: var(--accent); font-size: 14px; }
+
+.concepts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.concept-card {
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  border-radius: 4px;
+  padding: clamp(20px, 2.5vw, 28px);
+  display: grid; gap: 14px;
+}
+.concept-card-header { display: grid; gap: 4px; }
+.concept-num {
+  font-family: var(--sans); font-size: 10px;
+  letter-spacing: .22em; color: var(--accent);
+  text-transform: uppercase;
+}
+.concept-name {
+  font-family: var(--serif); font-weight: 600;
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.2; margin: 0;
+}
+.concept-tagline {
+  font-family: var(--sans); font-size: 12px;
+  letter-spacing: .08em; color: var(--muted);
+  background: var(--paper); border-radius: 2px;
+  padding: 4px 10px; display: inline-block; width: max-content;
+  border: 1px solid var(--rule-soft);
+}
+.concept-author {
+  font-family: var(--sans); font-size: 11px;
+  color: var(--muted-2); letter-spacing: .06em;
+}
+.concept-body { font-size: 14.5px; line-height: 1.9; color: var(--ink-2); }
+.concept-body p { margin: 0 0 .8em; }
+.concept-body p:last-child { margin: 0; }
+
+.concept-example {
+  font-size: 13.5px; line-height: 1.85;
+  border-left: 2px solid var(--accent);
+  padding: 10px 14px;
+  background: linear-gradient(to right, color-mix(in oklab, var(--accent) 5%, transparent), transparent);
+  color: var(--ink-2);
+}
+.concept-example-label {
+  font-family: var(--sans); font-size: 10px;
+  letter-spacing: .22em; color: var(--accent);
+  text-transform: uppercase; display: block; margin-bottom: 4px;
+}
+.concept-use {
+  font-size: 13.5px; line-height: 1.85;
+  padding: 10px 14px;
+  background: color-mix(in oklab, var(--indigo) 6%, transparent);
+  border-left: 2px solid var(--indigo);
+  color: var(--ink-2);
+}
+.concept-use-label {
+  font-family: var(--sans); font-size: 10px;
+  letter-spacing: .22em; color: var(--indigo);
+  text-transform: uppercase; display: block; margin-bottom: 4px;
+}
+
+.connections { display: grid; gap: 20px; }
+.connection {
+  display: grid; grid-template-columns: 200px 1fr;
+  gap: 20px; align-items: start;
+  border-top: 1px solid var(--rule-soft);
+  padding-top: 20px;
+}
+@media (max-width: 640px) { .connection { grid-template-columns: 1fr; gap: 10px; } }
+.connection-type {
+  font-family: var(--sans); font-size: 10.5px;
+  letter-spacing: .2em; text-transform: uppercase;
+}
+.connection-type.prereq { color: var(--accent); }
+.connection-type.complement { color: var(--indigo); }
+.connection-type.contrast { color: var(--gold); }
+.connection-pair {
+  font-family: var(--serif); font-weight: 600;
+  font-size: clamp(15px, 1.6vw, 18px);
+  line-height: 1.4; margin: 0 0 6px;
+}
+.connection-desc { font-size: 14.5px; line-height: 1.9; color: var(--ink-2); margin: 0; }
+
+.spec-flow { display: grid; gap: 0; counter-reset: step; }
+.spec-step {
+  display: grid; grid-template-columns: 44px 1fr;
+  gap: 16px; align-items: start;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.spec-step:last-child { border-bottom: 0; }
+.spec-step-num {
+  counter-increment: step;
+  font-family: var(--sans); font-size: 11px;
+  letter-spacing: .1em; color: var(--paper);
+  background: var(--accent); border-radius: 2px;
+  padding: 4px 8px; text-align: center;
+  align-self: start; margin-top: 4px;
+}
+.spec-step:nth-child(odd) .spec-step-num { background: var(--indigo); }
+.spec-step-body {}
+.spec-step-q {
+  font-family: var(--serif); font-weight: 600;
+  font-size: clamp(15px, 1.6vw, 18px); line-height: 1.4;
+  color: var(--ink); margin: 0 0 6px;
+}
+.spec-step-why { font-size: 14px; color: var(--muted); line-height: 1.85; margin: 0; }
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px; margin-bottom: 32px;
+}
+.book {
+  border: 1px solid var(--rule-soft); background: var(--paper);
+  padding: 18px 18px 20px; border-radius: 3px;
+  display: grid; gap: 4px;
+}
+.book-when {
+  font-family: var(--sans); font-size: 10px;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 4px;
+}
+.book-bar { width: 20px; height: 3px; background: var(--accent); margin-bottom: 8px; }
+.book-title {
+  font-family: var(--serif); font-weight: 600;
+  font-size: 15px; line-height: 1.5;
+}
+.book-author {
+  font-family: var(--sans); font-size: 11px;
+  color: var(--muted); letter-spacing: .06em;
+}
+.book-desc { font-size: 13px; color: var(--ink-2); line-height: 1.75; margin-top: 6px; }
+
+.exercises { display: grid; gap: 16px; }
+.exercise {
+  border: 1px solid var(--rule-soft);
+  border-left: 3px solid var(--accent);
+  background: var(--paper-2);
+  padding: 18px 20px; border-radius: 0 3px 3px 0;
+}
+.exercise:nth-child(2) { border-left-color: var(--indigo); }
+.exercise:nth-child(3) { border-left-color: var(--gold); }
+.exercise:nth-child(4) { border-left-color: var(--accent); }
+.exercise:nth-child(5) { border-left-color: var(--indigo); }
+.exercise-level {
+  font-family: var(--sans); font-size: 10px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--accent); display: block; margin-bottom: 6px;
+}
+.exercise:nth-child(2) .exercise-level { color: var(--indigo); }
+.exercise:nth-child(3) .exercise-level { color: var(--gold); }
+.exercise-q {
+  font-family: var(--serif); font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.65; color: var(--ink); margin: 0;
+}
+
+.closing-pull {
+  margin-top: 36px;
+  padding: 28px clamp(20px, 3vw, 40px);
+  background: var(--ink); color: var(--paper);
+  border-radius: 4px;
+  font-family: var(--serif);
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 2;
+}
+[data-theme="dark"] .closing-pull { background: var(--paper-deep); color: var(--ink); }
+.closing-pull strong { color: var(--accent); font-weight: 600; }
+.closing-pull em { font-style: normal; color: var(--gold); }
+
+.footer {
+  margin-top: clamp(56px, 8vw, 100px);
+  padding: 40px 0 48px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--sans); font-size: 12px;
+  color: var(--muted); letter-spacing: .08em;
+  display: flex; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px; align-items: center;
+}
+.footer-back {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--accent); text-decoration: none;
+  font-size: 12.5px; letter-spacing: .12em;
+  border-bottom: 1px solid transparent;
+  transition: border-color .15s;
+}
+.footer-back:hover { border-bottom-color: var(--accent); }
+.seal {
+  display: inline-block; width: 10px; height: 10px;
+  background: var(--accent); margin-right: 8px;
+  vertical-align: middle; border-radius: 1px;
+}
+
+[data-tooltip] { position: relative; cursor: help;
+  border-bottom: 1px dotted var(--muted); }
+[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute; bottom: calc(100% + 8px); left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink); color: var(--paper);
+  font-family: var(--sans); font-size: 11px;
+  letter-spacing: .04em; padding: 6px 10px;
+  border-radius: 2px; white-space: nowrap;
+  z-index: 100; pointer-events: none;
+}
+
+.ent-person { color: var(--indigo); border-bottom: 1px dotted var(--indigo); }
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="progress"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="back-link">← 知識地図に戻る</a>
+    <div class="topnav-title">行動経済学 深掘りガイド</div>
+    <div class="topnav-links">
+      <a href="#lens">レンズ</a>
+      <a href="#concepts">主要概念</a>
+      <a href="#connections">つながり</a>
+      <a href="#books">知識の定着</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="テーマ切替">DARK</button>
+  </div>
+</nav>
+
+<main class="page">
+
+  <header class="hero">
+    <div class="hero-breadcrumb">知識地図 · 領域 03</div>
+    <h1 class="hero-title">行動<span class="accent">経済学</span></h1>
+    <div class="hero-en">Behavioural Economics — A Deep Dive</div>
+    <p class="hero-lead">
+      人は合理的に選ぶはずなのに、なぜギャンブルの負けを取り返そうとするのか。
+      なぜ「無料」につられ、後で後悔するのか。
+      行動経済学は、心理学の知見を経済学に持ち込み、人間の「歪んだ合理性」を体系的に解明する。
+      本稿はChatGPTとGeminiによる入門リサーチを統合し、12の主要概念を案内する。
+    </p>
+    <div class="hero-stats">
+      <div><span class="label">主要概念</span>12</div>
+      <div><span class="label">構成</span>レンズ ／ 概念解剖 ／ つながり ／ 知識の定着</div>
+      <div><span class="label">出典</span>ChatGPT + Gemini による二重リサーチを統合</div>
+    </div>
+  </header>
+
+  <hr class="divider" />
+
+  <!-- ====== PART A ====== -->
+  <section class="section" id="lens">
+    <div class="section-head">
+      <div><div class="section-num"><strong>A</strong> · 序</div></div>
+      <div>
+        <h2 class="section-title">この学問のレンズ</h2>
+        <div class="section-sub">How behavioural economics sees the world</div>
+      </div>
+    </div>
+
+    <div class="lens-prose">
+      <p>
+        伝統的な経済学は「人は合理的に意思決定する」という前提に立っていた。
+        しかし現実の人間は、感情・文脈・フレーミング・過去の埋没費用に引きずられ、
+        教科書どおりの「最適解」とはほど遠い選択を繰り返す。
+        行動経済学はその「ずれ」を欠陥ではなく、研究対象として正面から扱う学問である。
+      </p>
+      <p>
+        <span class="ent-person" data-tooltip="ノーベル経済学賞 2002年">Daniel Kahneman</span>と
+        <span class="ent-person" data-tooltip="ノーベル経済学賞 2017年">Richard Thaler</span>らが体系化したこの分野の強みは、
+        「人はなぜ間違えるか」を予測可能なパターンとして記述できる点にある。
+        パターンが分かれば、設計で補える——それがナッジという実践につながる。
+        行動経済学のレンズを持つと、施策の「なぜ刺さらないのか」を問い直すことができる。
+      </p>
+    </div>
+
+    <div class="examples">
+      <div class="example">
+        <div class="example-bar"></div>
+        <div class="example-content">
+          <span class="example-label">事例 01 · 日常</span>
+          <p class="example-scene">健康診断を申し込もうと思っていたのに、「面倒だから来月でいいや」が半年続いている。</p>
+          <p class="example-analysis"><strong>現在バイアス</strong>の典型例。将来の利益（健康維持）より今の不快（手続きの手間）を重く感じてしまう。「オプトアウト制」にして最初から申込み済みにするナッジが有効。</p>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-bar"></div>
+        <div class="example-content">
+          <span class="example-label">事例 02 · ビジネス</span>
+          <p class="example-scene">不採算のプロジェクトに「ここまで投資したのだから」と追加予算を出し続けてしまう。</p>
+          <p class="example-analysis"><strong>サンクコストの誤謬</strong>。回収不能なコストを意思決定に組み込んでしまい、合理的な撤退判断ができない。財務判断では「今後の収支だけを見る」訓練が必要。</p>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-bar"></div>
+        <div class="example-content">
+          <span class="example-label">事例 03 · 政策</span>
+          <p class="example-scene">臓器提供の同意率が国によって大きく異なる——ドイツ12%対オーストリア99%。</p>
+          <p class="example-analysis">法律も罰則も同じ。違いは<strong>デフォルト設定</strong>（オプトイン vs オプトアウト）だけ。<strong>現状維持バイアス</strong>を利用した政策設計がここまで大きな差を生む——これが行動経済学の最も有名な実証例だ。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <span class="flow-label">行動経済学的な意思決定分析の流れ</span>
+      <span class="flow-step">選択行動を観察</span><span class="flow-arrow">→</span>
+      <span class="flow-step">どのバイアスが作動しているか特定</span><span class="flow-arrow">→</span>
+      <span class="flow-step">システム1か2かを確認</span><span class="flow-arrow">→</span>
+      <span class="flow-step">フレームと文脈を分解</span><span class="flow-arrow">→</span>
+      <span class="flow-step">デフォルト設定を見直す</span><span class="flow-arrow">→</span>
+      <span class="flow-step">ナッジを設計する</span>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ====== PART B ====== -->
+  <section class="section" id="concepts">
+    <div class="section-head">
+      <div><div class="section-num"><strong>B</strong> · 解剖</div></div>
+      <div>
+        <h2 class="section-title">主要概念の解剖</h2>
+        <div class="section-sub">12 core concepts examined</div>
+      </div>
+    </div>
+
+    <div class="concepts-grid">
+
+      <!-- 01 限定合理性 -->
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 01</div>
+          <h3 class="concept-name">限定合理性</h3>
+          <div class="concept-tagline">人は「十分よい」解を選ぶ</div>
+          <div class="concept-author">Herbert Simon（1955）</div>
+        </div>
+        <div class="concept-body">
+          <p>人間の情報処理能力には認知的・時間的・情報的な限界がある。そのため「完全な最適解」ではなく、ある基準を超えた「十分に良い解（satisficing）」で意思決定を打ち切る。</p>
+          <p>これは欠点ではなく適応戦略だが、その結果として様々なバイアスが生まれる基盤となる。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          スマホの機種変更で全モデルを比較する人はほぼいない。条件を数個決め、最初に合格したモデルを買う。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          選択肢を絞る「チェックリスト設計」が判断品質を上げる。多すぎる選択肢は限定合理性の罠にはまる。
+        </div>
+      </div>
+
+      <!-- 02 システム1/システム2 -->
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 02</div>
+          <h3 class="concept-name">システム1／システム2</h3>
+          <div class="concept-tagline">速い直感と遅い思考</div>
+          <div class="concept-author">Daniel Kahneman（2011）</div>
+        </div>
+        <div class="concept-body">
+          <p><strong>システム1</strong>：速く、自動的、感情的。意識せずに走る直感的処理。バイアスの発生源。</p>
+          <p><strong>システム2</strong>：遅く、意識的、論理的。努力を要する分析的処理。疲労や時間不足で機能低下する。</p>
+          <p>多くの意思決定は実はシステム1が先に答えを出し、システム2がそれを正当化している。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          「バットとボールで1ドル10セント。バットはボールより1ドル高い。ボールはいくら？」→多くの人が直感で10セントと答える（正解は5セント）。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          重要な意思決定では意図的にシステム2を起動させる。「一晩置く」「反対意見を聞く」が有効。
+        </div>
+      </div>
+
+      <!-- 03 ヒューリスティクスとバイアス -->
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 03</div>
+          <h3 class="concept-name">ヒューリスティクス</h3>
+          <div class="concept-tagline">近道思考がもたらす系統的誤り</div>
+          <div class="concept-author">Kahneman &amp; Tversky（1974）</div>
+        </div>
+        <div class="concept-body">
+          <p>複雑な問題を簡単な判断に置き換える認知的近道。<strong>利用可能性ヒューリスティクス</strong>（思い出しやすいものを頻度が高いと判断）、<strong>代表性ヒューリスティクス</strong>（ステレオタイプで確率を判断）などがある。</p>
+          <p>多くの場合うまく機能するが、特定の状況で系統的な誤りを生む。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          飛行機事故のニュースを見た後、飛行機を「危険」と感じやすくなる。交通事故死者数との比較は考慮されない。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          リスク評価や採用面接などヒューリスティクスが誤りを生む場面では、構造化された評価基準を設ける。
+        </div>
+      </div>
+
+      <!-- 04 プロスペクト理論 -->
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 04</div>
+          <h3 class="concept-name">プロスペクト理論</h3>
+          <div class="concept-tagline">人は「変化」と「損得」で価値を感じる</div>
+          <div class="concept-author">Kahneman &amp; Tversky（1979）</div>
+        </div>
+        <div class="concept-body">
+          <p>人は絶対的な富の量ではなく、<strong>現状からの変化</strong>（利得・損失）に対して価値を感じる。そして損失は同額の利得より約2倍大きく感じられる（損失回避）。</p>
+          <p>また確率の認知も歪み、低確率の結果（宝くじ・保険）を過大評価する。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          給料が10万円上がる喜びより、10万円下がる悲しみのほうがはるかに大きく感じられる。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          施策の効果を伝える際「1万円得する」より「1万円の損を防ぐ」と表現するほうが行動変容を促しやすい。
+        </div>
+      </div>
+
+      <!-- 05 損失回避 -->
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 05</div>
+          <h3 class="concept-name">損失回避</h3>
+          <div class="concept-tagline">失うことは得ることより痛い</div>
+          <div class="concept-author">Kahneman &amp; Tversky（1979）</div>
+        </div>
+        <div class="concept-body">
+          <p>損失の心理的インパクトは同額の利得の約2倍。人は利益を得ることより損失を避けることに強く動機づけられる。これが保有効果・現状維持バイアス・サンクコストの誤謬の根底にある。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          「期間限定セール終了まで残り1時間」という通知は、「お得なセール実施中」より購買衝動を強く刺激する。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          変化を嫌う組織行動に対し、「現状維持がリスク」と損失フレームで伝えると行動変容が起きやすい。
+        </div>
+      </div>
+
+      <!-- 06 フレーミング効果 -->
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 06</div>
+          <h3 class="concept-name">フレーミング効果</h3>
+          <div class="concept-tagline">同じ事実でも枠組みで判断が変わる</div>
+          <div class="concept-author">Kahneman &amp; Tversky（1981）</div>
+        </div>
+        <div class="concept-body">
+          <p>情報の提示方法（フレーム）が意思決定に影響する。「生存率90%」と「死亡率10%」は同じ事実だが、前者のほうが「安全」と評価される傾向がある。ポジティブフレームとネガティブフレームで選好が逆転することもある。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          「脂肪分10%含有」のヨーグルトより「脂肪分90%カット」のヨーグルトのほうが健康的に見える。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          提案資料では「節約できるコスト」ではなく「避けられる損失」として表現することで意思決定者の反応が変わる。
+        </div>
+      </div>
+
+      <!-- 07 アンカリング効果 -->
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 07</div>
+          <h3 class="concept-name">アンカリング効果</h3>
+          <div class="concept-tagline">最初の数字が判断の錨になる</div>
+          <div class="concept-author">Kahneman &amp; Tversky（1974）</div>
+        </div>
+        <div class="concept-body">
+          <p>最初に提示された数値や情報（アンカー）が、その後の判断の基準点になる現象。たとえ関係のない数字であっても、アンカーは見積もりや交渉の結果に影響を与える。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          交渉で先に高い金額を提示した側が有利になりやすい。レストランのメニューで一番高い料理が他の料理を「お手頃」に見せる。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          見積もり・交渉・評価では、アンカーが設定される前に自分なりの基準を持っておくことが重要。
+        </div>
+      </div>
+
+      <!-- 08 サンクコストの誤謬 -->
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 08</div>
+          <h3 class="concept-name">サンクコストの誤謬</h3>
+          <div class="concept-tagline">過去への投資が合理的判断を歪める</div>
+          <div class="concept-author">Arkes &amp; Blumer（1985）</div>
+        </div>
+        <div class="concept-body">
+          <p>すでに支払ってしまい回収不能なコスト（サンクコスト）を考慮することで、非合理な意思決定をしてしまう現象。「もったいない」という感情が撤退判断を妨げる。損失回避と密接に関連する。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          面白くない映画でも「高い入場料を払ったから」と最後まで観続ける。既に使った費用は取り戻せないのに。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          プロジェクト評価では「今後の費用対効果だけ」を評価軸にする。過去投資額は意思決定に含めない訓練が必要。
+        </div>
+      </div>
+
+      <!-- 09 現在バイアス -->
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 09</div>
+          <h3 class="concept-name">現在バイアス</h3>
+          <div class="concept-tagline">今の自分は未来の自分より重い</div>
+          <div class="concept-author">Laibson（1997）</div>
+        </div>
+        <div class="concept-body">
+          <p>将来の報酬より現在の報酬を不合理に高く評価する傾向（時間割引）。さらに「今すぐ」と「少し後」の間は特に大きく割引される（双曲割引）。貯蓄・ダイエット・学習など、長期利益と短期快楽が対立する場面で顕著になる。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          「来月から運動する」が続く。未来の自分には合理的な計画を立てるが、現在の自分は実行しない。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          コミットメント装置（自動積立、締切設定、公言）で未来の自分を縛り、現在バイアスを補完する。
+        </div>
+      </div>
+
+      <!-- 10 現状維持バイアス -->
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 10</div>
+          <h3 class="concept-name">現状維持バイアス</h3>
+          <div class="concept-tagline">変えないことが心地よい</div>
+          <div class="concept-author">Samuelson &amp; Zeckhauser（1988）</div>
+        </div>
+        <div class="concept-body">
+          <p>現状を変えることへの抵抗感。変化によるデメリットを過大評価し、メリットを過小評価する。損失回避と結びつき、「何もしない」を選び続けさせる強力な力として働く。デフォルト設定が強い影響力を持つ根拠でもある。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          スマホの設定を変えない。使っていないサブスクリプションを解約しない。より良い保険があると分かっていても変えない。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          望ましい行動をデフォルトにし、変えたい人だけオプトアウトする設計が行動変容に最も効果的。
+        </div>
+      </div>
+
+      <!-- 11 保有効果／メンタル・アカウンティング -->
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 11</div>
+          <h3 class="concept-name">保有効果・メンタル会計</h3>
+          <div class="concept-tagline">持っているものは高く感じる</div>
+          <div class="concept-author">Thaler（1980, 1985）</div>
+        </div>
+        <div class="concept-body">
+          <p><strong>保有効果</strong>：自分が持っているものを持っていないものより高く評価する。コーヒーカップ実験で有名。</p>
+          <p><strong>メンタル・アカウンティング</strong>：お金を心理的な「口座」に分けて管理し、交換性があるはずのお金に異なる価値を感じる（給料は節約するのに臨時収入は使ってしまう等）。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          ボーナスは「臨時収入」として贅沢に使うが、同額の給与は節約する。お金の価値は同じはずなのに。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          会計処理では全収入を同一視する習慣が意思決定の質を上げる。マーケティングでは「無料で試す」が保有効果を誘発する。
+        </div>
+      </div>
+
+      <!-- 12 ナッジ -->
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 12</div>
+          <h3 class="concept-name">ナッジ</h3>
+          <div class="concept-tagline">強制せず、そっと背中を押す</div>
+          <div class="concept-author">Thaler &amp; Sunstein（2008）</div>
+        </div>
+        <div class="concept-body">
+          <p>禁止や義務化なしに、人々の選択環境（選択アーキテクチャ）を設計することで望ましい行動を促す手法。バイアスを利用して「よい選択」を後押しする。デフォルト変更、フィードバック提供、社会的証明の活用などが代表的な手法。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          社員食堂で健康食を目線の高さに配置し、ジャンクフードを取りにくい場所に置く。売上構成が大幅に変化する。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          行動変容を促す施策では、ルール変更より選択環境の設計を先に検討する。強制より小さなナッジが持続的に機能する。
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ====== PART C ====== -->
+  <section class="section" id="connections">
+    <div class="section-head">
+      <div><div class="section-num"><strong>C</strong> · 接続</div></div>
+      <div>
+        <h2 class="section-title">他領域とのつながり</h2>
+        <div class="section-sub">How this field connects to the broader map</div>
+      </div>
+    </div>
+
+    <div class="connections">
+      <div class="connection">
+        <div>
+          <div class="connection-type prereq">前提となる領域</div>
+          <p class="connection-pair">認知心理学 → 行動経済学</p>
+          <p class="connection-desc">ヒューリスティクス・バイアス・二重過程理論（システム1/2）は認知心理学の知見を直接輸入している。認知心理学なしに行動経済学は成立しない。</p>
+        </div>
+      </div>
+      <div class="connection">
+        <div>
+          <div class="connection-type complement">補完する領域</div>
+          <p class="connection-pair">社会心理学 ↔ 行動経済学</p>
+          <p class="connection-desc">同調圧力・権威効果・社会的規範もナッジの重要な素材。「他の多くの人が選んでいます」という情報提示（社会的証明）は行動変容に強力に働く。</p>
+        </div>
+      </div>
+      <div class="connection">
+        <div>
+          <div class="connection-type contrast">対比・発展する領域</div>
+          <p class="connection-pair">行動経済学 → システム思考</p>
+          <p class="connection-desc">ナッジは個人の選択を変えるが、組織・社会全体の構造変化にはシステム思考が必要。短期的なバイアスへの介入と長期的なシステム構造の変革は相補的に使う。</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="section-head" style="margin-top: 0;">
+      <div><div class="section-num"><strong>C'</strong></div></div>
+      <div>
+        <h2 class="section-title">専門家の思考の流れ</h2>
+        <div class="section-sub">How a behavioural economist thinks</div>
+      </div>
+    </div>
+
+    <div class="spec-flow">
+      <div class="spec-step">
+        <div class="spec-step-num">01</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">「なぜ人は合理的に動かないのか」と問い直す</p>
+          <p class="spec-step-why">「努力が足りない」「分かっていない」ではなく、「どのバイアスが働いているか」を仮説として立てる。</p>
+        </div>
+      </div>
+      <div class="spec-step">
+        <div class="spec-step-num">02</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">選択アーキテクチャを可視化する</p>
+          <p class="spec-step-why">デフォルトは何か、選択肢の順番はどうか、フレームはどう設定されているかを確認する。</p>
+        </div>
+      </div>
+      <div class="spec-step">
+        <div class="spec-step-num">03</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">介入はナッジか？強制か？インセンティブか？</p>
+          <p class="spec-step-why">問題の性質によって適切な介入が異なる。まずナッジで十分か検討し、行動変容の持続性を評価する。</p>
+        </div>
+      </div>
+      <div class="spec-step">
+        <div class="spec-step-num">04</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">ランダム化比較実験（RCT）で検証する</p>
+          <p class="spec-step-why">行動経済学的施策はA/Bテストや自然実験で効果を確認する文化がある。理論だけでなくエビデンスが重要。</p>
+        </div>
+      </div>
+      <div class="spec-step">
+        <div class="spec-step-num">05</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">倫理的含意を問う</p>
+          <p class="spec-step-why">ナッジは「望ましい行動」の定義を誰が決めるか、という倫理問題を含む。パターナリズムとの境界を常に意識する。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ====== PART D ====== -->
+  <section class="section" id="books">
+    <div class="section-head">
+      <div><div class="section-num"><strong>D</strong> · 定着</div></div>
+      <div>
+        <h2 class="section-title">知識の定着</h2>
+        <div class="section-sub">Books, exercises &amp; reflection</div>
+      </div>
+    </div>
+
+    <div class="book-grid">
+      <div class="book">
+        <div class="book-when">入門</div>
+        <div class="book-bar"></div>
+        <div class="book-title">ファスト＆スロー</div>
+        <div class="book-author">Daniel Kahneman</div>
+        <div class="book-desc">システム1/2の二重過程理論を平易に解説する行動経済学の必読書。</div>
+      </div>
+      <div class="book">
+        <div class="book-when">入門</div>
+        <div class="book-bar"></div>
+        <div class="book-title">行動経済学の逆襲</div>
+        <div class="book-author">Richard Thaler</div>
+        <div class="book-desc">ノーベル賞受賞者が行動経済学の発展を自ら語る。ナッジの誕生まで。</div>
+      </div>
+      <div class="book">
+        <div class="book-when">実践</div>
+        <div class="book-bar"></div>
+        <div class="book-title">実践 行動経済学</div>
+        <div class="book-author">Thaler &amp; Sunstein</div>
+        <div class="book-desc">ナッジの概念と実際の政策設計を丁寧に解説する実践書。</div>
+      </div>
+      <div class="book">
+        <div class="book-when">応用</div>
+        <div class="book-bar"></div>
+        <div class="book-title">予想どおりに不合理</div>
+        <div class="book-author">Dan Ariely</div>
+        <div class="book-desc">日常の意思決定にひそむバイアスを豊富な実験で検証する。</div>
+      </div>
+    </div>
+
+    <div class="exercises">
+      <div class="exercise">
+        <span class="exercise-level">振り返り · Lv.1</span>
+        <p class="exercise-q">今週「やろうと思っていたのにやらなかったこと」を1つ挙げ、どのバイアスが働いていたかを特定してみよう。</p>
+      </div>
+      <div class="exercise">
+        <span class="exercise-level">観察 · Lv.2</span>
+        <p class="exercise-q">自分が使っているサービスや職場の仕組みの中で「ナッジ」を3つ見つけよ。誰がどんな行動を促すために設計したのかを分析する。</p>
+      </div>
+      <div class="exercise">
+        <span class="exercise-level">設計 · Lv.3</span>
+        <p class="exercise-q">職場または家庭で「習慣化したいが続かない行動」を1つ選び、強制やインセンティブを使わずナッジだけで解決策を設計してみよ。</p>
+      </div>
+    </div>
+
+    <div class="closing-pull">
+      行動経済学が示す最大の洞察は、<strong>「人が不合理なのではなく、人は予測可能な形で間違える」</strong>という点だ。
+      パターンが分かれば設計できる。人を変えようとする前に、
+      <em>選択の環境を変える</em>という発想の転換——それがこの学問の実践的な核心である。
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer page">
+  <a href="index.html" class="footer-back"><span class="seal"></span>知識地図に戻る</a>
+  <div>行動経済学 深掘りガイド｜七領域をつなぐ知識地図</div>
+</footer>
+
+<script>
+const prog = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+  prog.style.width = pct + '%';
+}, { passive: true });
+
+const btn = document.getElementById('themeToggle');
+btn.addEventListener('click', () => {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+  btn.textContent = isDark ? 'DARK' : 'LIGHT';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ナレッジマネジメント 深掘りガイド｜七領域をつなぐ知識地図</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&family=Shippori+Mincho:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --paper: #efe8d6; --paper-2: #e7dec7; --paper-deep: #ddd0b1;
+  --ink: #1c1814; --ink-2: #2f2820; --muted: #6e6452; --muted-2: #998b71;
+  --rule: #c5b793; --rule-soft: #d8caa9;
+  --accent: #b13427; --accent-deep: #84251c; --indigo: #2a4858; --gold: #a37b1f;
+  --serif: "Shippori Mincho", "Noto Serif JP", "YuMincho", "Hiragino Mincho ProN", serif;
+  --sans: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "YuGothic", system-ui, sans-serif;
+  --pad-page: clamp(20px, 4vw, 56px);
+}
+[data-theme="dark"] {
+  --paper: #15120e; --paper-2: #1c1813; --paper-deep: #251f17;
+  --ink: #ece2c8; --ink-2: #d6cab0; --muted: #8e826a; --muted-2: #6b6150;
+  --rule: #3a3225; --rule-soft: #2a2419;
+  --accent: #d2503e; --accent-deep: #a13a2c; --indigo: #6f96a9; --gold: #c9a14a;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: var(--serif); font-feature-settings: "palt"; line-height: 1.85; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body { background: radial-gradient(ellipse 80% 60% at 20% 0%, color-mix(in oklab, var(--paper-2) 70%, transparent) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 100%, color-mix(in oklab, var(--paper-deep) 55%, transparent) 0%, transparent 70%), var(--paper); min-height: 100vh; }
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .35; z-index: 0; background-image: radial-gradient(rgba(0,0,0,.025) 1px, transparent 1px), radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px); background-size: 3px 3px, 5px 5px; background-position: 0 0, 1px 2px; mix-blend-mode: multiply; }
+[data-theme="dark"] body::before { mix-blend-mode: screen; opacity: .15; }
+main, header, footer, nav { position: relative; z-index: 1; }
+.scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 100; width: 0%; transition: width .08s linear; }
+.page { max-width: 1080px; margin: 0 auto; padding: 0 var(--pad-page); }
+.divider { height: 1px; background: linear-gradient(to right, transparent, var(--rule) 20%, var(--rule) 80%, transparent); margin: clamp(40px, 6vw, 72px) 0; border: 0; }
+.topnav { position: sticky; top: 0; z-index: 50; background: color-mix(in oklab, var(--paper) 88%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule-soft); }
+.topnav-inner { max-width: 1080px; margin: 0 auto; padding: 14px var(--pad-page); display: flex; align-items: center; gap: 16px; }
+.back-link { font-family: var(--sans); font-size: 12px; letter-spacing: .14em; color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; transition: color .15s, border-color .15s; }
+.back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.topnav-title { font-family: var(--serif); font-size: 15px; font-weight: 600; letter-spacing: .08em; color: var(--ink); }
+.topnav-links { display: flex; gap: 20px; margin-left: auto; font-family: var(--sans); font-size: 12px; letter-spacing: .08em; color: var(--muted); }
+.topnav-links a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: color .15s, border-color .15s; }
+.topnav-links a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+@media (max-width: 700px) { .topnav-links { display: none; } }
+.theme-toggle { border: 1px solid var(--rule); background: transparent; color: var(--muted); font-family: var(--sans); font-size: 11px; letter-spacing: .14em; padding: 6px 10px; border-radius: 2px; cursor: pointer; transition: all .15s; }
+.theme-toggle:hover { color: var(--ink); border-color: var(--ink); }
+.hero { padding: clamp(56px, 9vw, 120px) 0 clamp(36px, 5vw, 64px); display: grid; gap: clamp(20px, 3vw, 40px); }
+.hero-breadcrumb { font-family: var(--sans); font-size: 11px; letter-spacing: .36em; color: var(--muted); text-transform: uppercase; }
+.hero-title { font-family: var(--serif); font-weight: 600; font-size: clamp(36px, 6vw, 80px); line-height: 1.1; letter-spacing: .02em; margin: 0; }
+.hero-title .accent { color: var(--accent); }
+.hero-en { font-family: var(--sans); font-size: 12px; letter-spacing: .32em; color: var(--muted); text-transform: uppercase; margin-top: -8px; }
+.hero-lead { max-width: 54ch; font-size: clamp(15px, 1.4vw, 17.5px); line-height: 2; color: var(--ink-2); margin: 0; }
+.hero-stats { display: flex; gap: 24px; flex-wrap: wrap; font-family: var(--sans); font-size: 11px; letter-spacing: .16em; color: var(--muted); padding-top: 20px; border-top: 1px solid var(--rule-soft); }
+.hero-stats .label { color: var(--muted-2); margin-right: 6px; }
+.section { padding: clamp(36px, 5vw, 60px) 0; }
+.section-head { display: grid; grid-template-columns: 100px 1fr; gap: 28px; align-items: baseline; margin-bottom: clamp(32px, 4vw, 56px); padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+@media (max-width: 640px) { .section-head { grid-template-columns: 1fr; gap: 6px; } }
+.section-num { font-family: var(--serif); font-size: 13px; letter-spacing: .28em; color: var(--accent); }
+.section-title { font-family: var(--serif); font-weight: 600; font-size: clamp(24px, 3.2vw, 40px); line-height: 1.25; margin: 0; }
+.section-sub { font-family: var(--sans); font-size: 11.5px; letter-spacing: .22em; color: var(--muted); text-transform: uppercase; margin-top: 6px; }
+.lens-prose p { font-size: 16.5px; line-height: 2; margin: 0 0 1.4em; color: var(--ink-2); text-align: justify; text-justify: inter-character; max-width: 68ch; }
+.lens-prose p:first-child::first-letter { font-size: 3.2em; float: left; line-height: .9; padding: 4px 10px 0 0; font-weight: 600; color: var(--accent); }
+.examples { display: grid; gap: 20px; margin-top: 32px; }
+.example { display: grid; grid-template-columns: 3px 1fr; gap: 0 20px; align-items: start; }
+.example-bar { background: var(--accent); height: 100%; border-radius: 2px; }
+.example:nth-child(2) .example-bar { background: var(--indigo); }
+.example:nth-child(3) .example-bar { background: var(--gold); }
+.example-label { font-family: var(--sans); font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; display: block; }
+.example:nth-child(2) .example-label { color: var(--indigo); }
+.example:nth-child(3) .example-label { color: var(--gold); }
+.example-scene { font-size: 15.5px; color: var(--ink-2); margin: 0 0 .5em; font-style: italic; line-height: 1.8; }
+.example-analysis { font-size: 14.5px; line-height: 1.9; color: var(--ink-2); background: var(--paper-2); border-radius: 3px; padding: 12px 16px; margin: 0; }
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 32px; padding: 24px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 4px; }
+.flow-label { font-family: var(--sans); font-size: 10px; letter-spacing: .18em; color: var(--muted); text-transform: uppercase; width: 100%; margin-bottom: 4px; }
+.flow-step { font-family: var(--sans); font-size: 12px; background: var(--paper); border: 1px solid var(--rule-soft); padding: 6px 12px; border-radius: 2px; color: var(--ink); white-space: nowrap; }
+.flow-arrow { color: var(--accent); font-size: 14px; }
+.concepts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.concept-card { border: 1px solid var(--rule); background: var(--paper-2); border-radius: 4px; padding: clamp(20px, 2.5vw, 28px); display: grid; gap: 14px; }
+.concept-card-header { display: grid; gap: 4px; }
+.concept-num { font-family: var(--sans); font-size: 10px; letter-spacing: .22em; color: var(--accent); text-transform: uppercase; }
+.concept-name { font-family: var(--serif); font-weight: 600; font-size: clamp(20px, 2.2vw, 26px); line-height: 1.2; margin: 0; }
+.concept-tagline { font-family: var(--sans); font-size: 12px; letter-spacing: .08em; color: var(--muted); background: var(--paper); border-radius: 2px; padding: 4px 10px; display: inline-block; width: max-content; border: 1px solid var(--rule-soft); }
+.concept-author { font-family: var(--sans); font-size: 11px; color: var(--muted-2); letter-spacing: .06em; }
+.concept-body { font-size: 14.5px; line-height: 1.9; color: var(--ink-2); }
+.concept-body p { margin: 0 0 .8em; }
+.concept-body p:last-child { margin: 0; }
+.concept-example { font-size: 13.5px; line-height: 1.85; border-left: 2px solid var(--accent); padding: 10px 14px; background: linear-gradient(to right, color-mix(in oklab, var(--accent) 5%, transparent), transparent); color: var(--ink-2); }
+.concept-example-label { font-family: var(--sans); font-size: 10px; letter-spacing: .22em; color: var(--accent); text-transform: uppercase; display: block; margin-bottom: 4px; }
+.concept-use { font-size: 13.5px; line-height: 1.85; padding: 10px 14px; background: color-mix(in oklab, var(--indigo) 6%, transparent); border-left: 2px solid var(--indigo); color: var(--ink-2); }
+.concept-use-label { font-family: var(--sans); font-size: 10px; letter-spacing: .22em; color: var(--indigo); text-transform: uppercase; display: block; margin-bottom: 4px; }
+.connections { display: grid; gap: 20px; }
+.connection { display: grid; grid-template-columns: 200px 1fr; gap: 20px; align-items: start; border-top: 1px solid var(--rule-soft); padding-top: 20px; }
+@media (max-width: 640px) { .connection { grid-template-columns: 1fr; gap: 10px; } }
+.connection-type { font-family: var(--sans); font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; }
+.connection-type.prereq { color: var(--accent); }
+.connection-type.complement { color: var(--indigo); }
+.connection-type.contrast { color: var(--gold); }
+.connection-pair { font-family: var(--serif); font-weight: 600; font-size: clamp(15px, 1.6vw, 18px); line-height: 1.4; margin: 0 0 6px; }
+.connection-desc { font-size: 14.5px; line-height: 1.9; color: var(--ink-2); margin: 0; }
+.spec-flow { display: grid; gap: 0; counter-reset: step; }
+.spec-step { display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: start; padding: 16px 0; border-bottom: 1px solid var(--rule-soft); }
+.spec-step:last-child { border-bottom: 0; }
+.spec-step-num { counter-increment: step; font-family: var(--sans); font-size: 11px; letter-spacing: .1em; color: var(--paper); background: var(--accent); border-radius: 2px; padding: 4px 8px; text-align: center; align-self: start; margin-top: 4px; }
+.spec-step:nth-child(odd) .spec-step-num { background: var(--indigo); }
+.spec-step-q { font-family: var(--serif); font-weight: 600; font-size: clamp(15px, 1.6vw, 18px); line-height: 1.4; color: var(--ink); margin: 0 0 6px; }
+.spec-step-why { font-size: 14px; color: var(--muted); line-height: 1.85; margin: 0; }
+.book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.book { border: 1px solid var(--rule-soft); background: var(--paper); padding: 18px 18px 20px; border-radius: 3px; display: grid; gap: 4px; }
+.book-when { font-family: var(--sans); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.book-bar { width: 20px; height: 3px; background: var(--accent); margin-bottom: 8px; }
+.book-title { font-family: var(--serif); font-weight: 600; font-size: 15px; line-height: 1.5; }
+.book-author { font-family: var(--sans); font-size: 11px; color: var(--muted); letter-spacing: .06em; }
+.book-desc { font-size: 13px; color: var(--ink-2); line-height: 1.75; margin-top: 6px; }
+.exercises { display: grid; gap: 16px; }
+.exercise { border: 1px solid var(--rule-soft); border-left: 3px solid var(--accent); background: var(--paper-2); padding: 18px 20px; border-radius: 0 3px 3px 0; }
+.exercise:nth-child(2) { border-left-color: var(--indigo); }
+.exercise:nth-child(3) { border-left-color: var(--gold); }
+.exercise-level { font-family: var(--sans); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 6px; }
+.exercise:nth-child(2) .exercise-level { color: var(--indigo); }
+.exercise:nth-child(3) .exercise-level { color: var(--gold); }
+.exercise-q { font-family: var(--serif); font-size: clamp(15px, 1.6vw, 17px); line-height: 1.65; color: var(--ink); margin: 0; }
+.closing-pull { margin-top: 36px; padding: 28px clamp(20px, 3vw, 40px); background: var(--ink); color: var(--paper); border-radius: 4px; font-family: var(--serif); font-size: clamp(15px, 1.5vw, 18px); line-height: 2; }
+[data-theme="dark"] .closing-pull { background: var(--paper-deep); color: var(--ink); }
+.closing-pull strong { color: var(--accent); font-weight: 600; }
+.closing-pull em { font-style: normal; color: var(--gold); }
+.footer { margin-top: clamp(56px, 8vw, 100px); padding: 40px 0 48px; border-top: 1px solid var(--rule); font-family: var(--sans); font-size: 12px; color: var(--muted); letter-spacing: .08em; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; align-items: center; }
+.footer-back { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); text-decoration: none; font-size: 12.5px; letter-spacing: .12em; border-bottom: 1px solid transparent; transition: border-color .15s; }
+.footer-back:hover { border-bottom-color: var(--accent); }
+.seal { display: inline-block; width: 10px; height: 10px; background: var(--accent); margin-right: 8px; vertical-align: middle; border-radius: 1px; }
+[data-tooltip] { position: relative; cursor: help; border-bottom: 1px dotted var(--muted); }
+[data-tooltip]:hover::after { content: attr(data-tooltip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--paper); font-family: var(--sans); font-size: 11px; letter-spacing: .04em; padding: 6px 10px; border-radius: 2px; white-space: nowrap; z-index: 100; pointer-events: none; }
+.ent-person { color: var(--indigo); border-bottom: 1px dotted var(--indigo); }
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="progress"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="back-link">← 知識地図に戻る</a>
+    <div class="topnav-title">ナレッジマネジメント 深掘りガイド</div>
+    <div class="topnav-links">
+      <a href="#lens">レンズ</a>
+      <a href="#concepts">主要概念</a>
+      <a href="#connections">つながり</a>
+      <a href="#books">知識の定着</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="テーマ切替">DARK</button>
+  </div>
+</nav>
+
+<main class="page">
+
+  <header class="hero">
+    <div class="hero-breadcrumb">知識地図 · 領域 05</div>
+    <h1 class="hero-title">ナレッジ<span class="accent">マネジメント</span></h1>
+    <div class="hero-en">Knowledge Management — A Deep Dive</div>
+    <p class="hero-lead">
+      ベテランが退職した途端に「あの人にしか分からなかったこと」が失われる。
+      同じ失敗が部門をまたいで繰り返される。
+      ナレッジマネジメントは、組織の知識を可視化・共有・蓄積・活用する仕組みの学問であり、
+      知識そのものが競争優位の源泉となる時代の必須知識基盤だ。
+    </p>
+    <div class="hero-stats">
+      <div><span class="label">主要概念</span>12</div>
+      <div><span class="label">構成</span>レンズ ／ 概念解剖 ／ つながり ／ 知識の定着</div>
+      <div><span class="label">出典</span>ChatGPT + Gemini による二重リサーチを統合</div>
+    </div>
+  </header>
+
+  <hr class="divider" />
+
+  <section class="section" id="lens">
+    <div class="section-head">
+      <div><div class="section-num"><strong>A</strong> · 序</div></div>
+      <div>
+        <h2 class="section-title">この学問のレンズ</h2>
+        <div class="section-sub">How knowledge management sees the world</div>
+      </div>
+    </div>
+
+    <div class="lens-prose">
+      <p>
+        ナレッジマネジメント（KM）の根本的な問いは、「組織の知識はどこにあり、どう流れ、どう育つのか」だ。
+        個人の頭の中に眠る暗黙知、文書に固定された形式知、実践を通じて共有される実践知——
+        これらを意識的に管理することが、組織の学習能力と競争力に直結する。
+      </p>
+      <p>
+        <span class="ent-person" data-tooltip="『知識創造企業』著者">野中郁次郎</span>と
+        <span class="ent-person" data-tooltip="一橋大学、野中との共著者">竹内弘高</span>が提唱したSECIモデルは、
+        個人の暗黙知が組織の形式知へ変換・拡大されるプロセスを体系化し、
+        日本発のKM理論として世界的影響を与えた。
+        KMのレンズを持つと、「ドキュメント整備」以上の次元で知識の流れを設計できるようになる。
+      </p>
+    </div>
+
+    <div class="examples">
+      <div class="example">
+        <div class="example-bar"></div>
+        <div class="example-content">
+          <span class="example-label">事例 01 · 暗黙知の喪失</span>
+          <p class="example-scene">20年のベテラン営業が退職し、「あの人特有の顧客との関係構築スキル」が誰にも伝わらないまま失われた。</p>
+          <p class="example-analysis"><strong>暗黙知</strong>の典型。言語化しにくい経験知・直感・関係資本は、担い手が去ると一緒に消える。SECIモデルの「共同化→表出化」のプロセスを意識的に設計しないと、組織の知識蓄積は人依存のまま止まる。</p>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-bar"></div>
+        <div class="example-content">
+          <span class="example-label">事例 02 · 知識の孤立</span>
+          <p class="example-scene">営業部が顧客クレームから学んだ改善点が、開発部に伝わらない。同種の問題が毎年繰り返される。</p>
+          <p class="example-analysis"><strong>組織記憶</strong>と<strong>組織学習</strong>の問題。知識が部門の「記憶」に閉じ込められ、全体の知識として蓄積されない。<strong>トランザクティブ・メモリー</strong>が機能していれば「誰が何を知っているか」が共有され、知識が流れるルートが開く。</p>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-bar"></div>
+        <div class="example-content">
+          <span class="example-label">事例 03 · 知識創造</span>
+          <p class="example-scene">新製品開発チームが週1回の勉強会で「自分の専門領域を他職種に説明する」を実践している。</p>
+          <p class="example-analysis"><strong>場（Ba）</strong>の意図的な設計。異なる専門性が交差する場で、個人の暗黙知が外部化され、組織の新しい知識として結合・創造される。SECIモデルの好循環が起きている。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <span class="flow-label">KMの知識循環の流れ（SECIモデル）</span>
+      <span class="flow-step">共同化（暗黙→暗黙）</span><span class="flow-arrow">→</span>
+      <span class="flow-step">表出化（暗黙→形式）</span><span class="flow-arrow">→</span>
+      <span class="flow-step">連結化（形式→形式）</span><span class="flow-arrow">→</span>
+      <span class="flow-step">内面化（形式→暗黙）</span><span class="flow-arrow">→</span>
+      <span class="flow-step">次のスパイラルへ</span>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="concepts">
+    <div class="section-head">
+      <div><div class="section-num"><strong>B</strong> · 解剖</div></div>
+      <div>
+        <h2 class="section-title">主要概念の解剖</h2>
+        <div class="section-sub">12 core concepts examined</div>
+      </div>
+    </div>
+
+    <div class="concepts-grid">
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 01</div>
+          <h3 class="concept-name">暗黙知</h3>
+          <div class="concept-tagline">言葉にできない「知っている」</div>
+          <div class="concept-author">Michael Polanyi（1966）</div>
+        </div>
+        <div class="concept-body">
+          <p>「我々は語ることができる以上のことを知ることができる」（Polanyi）。経験・直感・技能・人間関係に宿る、言語化しにくい知識。熟練職人の手さばき、優秀な営業の読み、優れたリーダーのタイミング感覚がこれにあたる。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          長年の経験で培った「このプロジェクトは危ない」という直感。言葉にはできないが経験者には確かに存在する。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          暗黙知の移転は「観察・模倣・実践」による。OJTやメンタリングが形式的なマニュアルより有効な理由がここにある。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 02</div>
+          <h3 class="concept-name">形式知</h3>
+          <div class="concept-tagline">言語化・記号化された知識</div>
+          <div class="concept-author">野中郁次郎・竹内弘高（1995）</div>
+        </div>
+        <div class="concept-body">
+          <p>言語・数値・図表・手順書として表現・共有・保存できる知識。マニュアル、仕様書、データベース、報告書がこれにあたる。転送・複製・蓄積が容易だが、文脈を失うと「死んだ知識」になるリスクがある。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          業務マニュアル・設計図・コードドキュメント。誰でも参照でき、担い手が変わっても継続できる。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          形式知化は「誰でも使えるようにする」ための変換だが、暗黙知のすべては形式化できない。両者のバランスを意識する。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 03</div>
+          <h3 class="concept-name">SECIモデル</h3>
+          <div class="concept-tagline">知識創造の四つのスパイラル</div>
+          <div class="concept-author">野中郁次郎・竹内弘高（1995）</div>
+        </div>
+        <div class="concept-body">
+          <p>知識変換の4つのモードを描くモデル。<strong>共同化</strong>（暗黙→暗黙：体験共有）、<strong>表出化</strong>（暗黙→形式：概念化・言語化）、<strong>連結化</strong>（形式→形式：体系化・組み合わせ）、<strong>内面化</strong>（形式→暗黙：実践による体得）。スパイラル状に繰り返されることで知識が創造・拡大する。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          熟練社員との同行（共同化）→ノウハウを言語化（表出化）→マニュアル化（連結化）→新人が実践して体得（内面化）。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          知識管理の施策をSECIの4モードにマッピングして「どのモードが弱いか」を診断し、優先的に強化する。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 04</div>
+          <h3 class="concept-name">場（Ba）</h3>
+          <div class="concept-tagline">知識が創造される共有の文脈</div>
+          <div class="concept-author">野中郁次郎・紺野登（1998）</div>
+        </div>
+        <div class="concept-body">
+          <p>知識が創造・共有される物理的・仮想的・精神的な場所。単なる「会議室」ではなく、参加者が文脈を共有し、相互作用が起きる空間。SECIの各フェーズに対応した「場」の設計が知識創造を促進する。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          共同化の場＝現場OJT、表出化の場＝ブレスト会議、連結化の場＝ナレッジDB、内面化の場＝実践の機会。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          コミュニケーション施策を設計する際「どんな知識創造を促したいか」→「どんな場が必要か」の順に考える。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 05</div>
+          <h3 class="concept-name">知識創造企業</h3>
+          <div class="concept-tagline">知識を戦略的に創り続ける組織</div>
+          <div class="concept-author">野中郁次郎・竹内弘高（1995）</div>
+        </div>
+        <div class="concept-body">
+          <p>暗黙知と形式知の変換スパイラルを組織的に実践し、継続的に新知識を創造する企業の形態。ミドルマネジメントが「知識ブローカー」として、現場の暗黙知と経営の形式知を媒介する「ミドルアップダウン」経営が特徴。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          本田技研のホンダウェイ、キヤノンの製品開発文化など日本企業の強さをKMの視点で解釈した理論的枠組み。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          ミドルマネジャーの役割を「管理」から「知識創造の触媒」として再定義することが、知識創造企業への移行の鍵。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 06</div>
+          <h3 class="concept-name">実践共同体（CoP）</h3>
+          <div class="concept-tagline">同じ実践を共有する人々の自然発生的な集まり</div>
+          <div class="concept-author">Lave &amp; Wenger（1991）</div>
+        </div>
+        <div class="concept-body">
+          <p>同じ実践・関心・活動領域を共有する人々が自発的に形成するグループ（Community of Practice）。公式な組織構造とは独立して存在し、実践を通じた学習と知識共有が起きる。正統的周辺参加から中心への移行が学習プロセス。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          社内のUIデザイナー同士が部署を越えて自発的に勉強会を開催し、ベストプラクティスを共有する。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          CoP形成を組織が支援する際は、管理・評価で公式化しすぎない。自発性と文脈の共有を守ることが重要。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 07</div>
+          <h3 class="concept-name">組織記憶</h3>
+          <div class="concept-tagline">組織が蓄積・保持する知識の総体</div>
+          <div class="concept-author">Walsh &amp; Ungson（1991）</div>
+        </div>
+        <div class="concept-body">
+          <p>個人の記憶・文化・変換・構造・生態・外部アーカイブの6つの記憶保存場所からなる組織の記憶システム。担い手が変わっても知識が保持されるが、不適切な記憶が「組織の慣性」として変革を妨げることもある。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          社内WikiやCRM蓄積データは形式的組織記憶の例。「この会社のやり方」という文化的規範も組織記憶の一部。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          定期的な「知識棚卸し」で何が蓄積されているか確認する。古くなった組織記憶は積極的にアップデートする。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 08</div>
+          <h3 class="concept-name">シングルループ／ダブルループ学習</h3>
+          <div class="concept-tagline">修正するか、前提を問い直すか</div>
+          <div class="concept-author">Argyris &amp; Schön（1978）</div>
+        </div>
+        <div class="concept-body">
+          <p>KMにおける学習の深さの区別。<strong>シングルループ</strong>：既存の枠組みの中でエラーを修正する（how to do it better）。<strong>ダブルループ</strong>：前提・価値観・目標そのものを問い直す（why we do this）。変化の激しい環境ではダブルループが必須。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          KPIが未達のとき施策の改善で対応する（シングルループ）vs. そのKPI設定自体が適切か問い直す（ダブルループ）。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          振り返り会議のアジェンダに「前提の確認」を定期的に組み込み、ダブルループ学習が起きる場を意図的に設計する。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 09</div>
+          <h3 class="concept-name">吸収能力</h3>
+          <div class="concept-tagline">外部知識を取り込み活用する力</div>
+          <div class="concept-author">Cohen &amp; Levinthal（1990）</div>
+        </div>
+        <div class="concept-body">
+          <p>組織が外部の新しい知識を認識し、同化し、自社の目的に応用する能力。吸収能力は既存の関連知識の蓄積に依存する（「理解するには既知の知識が必要」）。学習への投資が次の学習能力を高めるという好循環がある。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          AI活用が進む企業は「AI以前の蓄積されたデータ資産」があったからこそ活用できる。基盤知識なき導入は効果が薄い。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          新技術・外部知識を活用するには、受け取り側の知識基盤を先に育てる。学習への継続投資が吸収能力の源泉。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 10</div>
+          <h3 class="concept-name">トランザクティブ・メモリー</h3>
+          <div class="concept-tagline">「誰が何を知っているか」を知っている</div>
+          <div class="concept-author">Daniel Wegner（1987）</div>
+        </div>
+        <div class="concept-body">
+          <p>チームの各メンバーが「誰がどんな知識を持っているか」のマップを共有している状態。知識そのものをすべて持つ必要はなく、「必要な時に誰に聞けばよいか」を知っていること自体が組織の知的資産となる。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          「法務の鈴木さんに聞けばいい」「Aさんはあの顧客業界の人脈がある」という暗黙のマップが機能しているチーム。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          オンボーディングで「エキスパートマップ（誰が何を知るか）」を明示的に共有し、質問相手を探す時間を削減する。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 11</div>
+          <h3 class="concept-name">組織学習</h3>
+          <div class="concept-tagline">経験を組織の行動変容に繋げる</div>
+          <div class="concept-author">Argyris（1977）, Levitt &amp; March（1988）</div>
+        </div>
+        <div class="concept-body">
+          <p>組織が経験からルーティン・価値観・知識を更新し、将来の行動が変わること。個人の学習が組織学習になるためには、知識が組織のルーティン・文化・システムに埋め込まれる必要がある。個人が学ぶだけでは組織は学ばない。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          プロジェクト終了後の振り返り（KPT）が次のプロジェクトの設計に反映される仕組みがあれば組織学習が起きている。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          個人の気づきを「組織の仕組みに落とし込む」プロセスを設計する。学びが属人的なままでは組織学習は起きない。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 12</div>
+          <h3 class="concept-name">知識の探索と活用</h3>
+          <div class="concept-tagline">新しく学ぶか、今あるものを深めるか</div>
+          <div class="concept-author">James March（1991）</div>
+        </div>
+        <div class="concept-body">
+          <p><strong>探索（Exploration）</strong>：新しい知識・能力・手法を開拓する。リスクが高いが変化に対応できる。<strong>活用（Exploitation）</strong>：既存の知識・能力を深め効率を高める。安定的だが環境変化への適応力が低下する。組織はこの両者のバランス（両利きの経営）が必要。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          既存事業の改善に専念しすぎて新領域への投資が遅れる「イノベーターのジレンマ」は、活用への偏重が生む問題。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          KM戦略でも「既存知識の深耕」と「新知識の取り込み」のバランスを意識的に設計する。一方だけでは組織が停滞または迷走する。
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="connections">
+    <div class="section-head">
+      <div><div class="section-num"><strong>C</strong> · 接続</div></div>
+      <div>
+        <h2 class="section-title">他領域とのつながり</h2>
+        <div class="section-sub">How this field connects to the broader map</div>
+      </div>
+    </div>
+
+    <div class="connections">
+      <div class="connection">
+        <div>
+          <div class="connection-type prereq">前提となる領域</div>
+          <p class="connection-pair">組織論 → ナレッジマネジメント</p>
+          <p class="connection-desc">ダブルループ学習・組織文化・心理的安全性など、組織論の概念はKMの実践基盤を提供する。KMはこれらを知識の視点から具体化した応用領域。</p>
+        </div>
+      </div>
+      <div class="connection">
+        <div>
+          <div class="connection-type complement">補完する領域</div>
+          <p class="connection-pair">認知心理学 ↔ ナレッジマネジメント</p>
+          <p class="connection-desc">暗黙知の構造・スキーマ・認知負荷理論は、知識の表出化と移転をより効果的に設計するための基盤を与える。「なぜマニュアルが機能しないか」を認知的に解明できる。</p>
+        </div>
+      </div>
+      <div class="connection">
+        <div>
+          <div class="connection-type contrast">接続する領域</div>
+          <p class="connection-pair">ナレッジマネジメント → 学習する組織</p>
+          <p class="connection-desc">KMが「知識の管理と流通」に焦点を当てるのに対し、学習する組織は「組織の変革能力そのもの」を育てることを目指す。KMは学習する組織を支える基盤インフラとして機能する。</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="section-head" style="margin-top: 0;">
+      <div><div class="section-num"><strong>C'</strong></div></div>
+      <div>
+        <h2 class="section-title">専門家の思考の流れ</h2>
+        <div class="section-sub">How a KM practitioner thinks</div>
+      </div>
+    </div>
+
+    <div class="spec-flow">
+      <div class="spec-step">
+        <div class="spec-step-num">01</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">「失われたらどうなるか」で重要知識を特定する</p>
+          <p class="spec-step-why">KMの出発点は知識の棚卸し。「この人が明日いなくなったらどの業務が止まるか」を問い、暗黙知の所在を可視化する。</p>
+        </div>
+      </div>
+      <div class="spec-step">
+        <div class="spec-step-num">02</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">SECIのどのフェーズが詰まっているかを診断する</p>
+          <p class="spec-step-why">「知識はあるのに使われない」は連結化・内面化の問題。「知識が蓄積されない」は表出化の問題。フェーズを特定することで施策が絞られる。</p>
+        </div>
+      </div>
+      <div class="spec-step">
+        <div class="spec-step-num">03</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">知識の流れを場（Ba）として設計する</p>
+          <p class="spec-step-why">ツール（DB・Wiki）だけでKMは機能しない。人が集まり、対話し、実践する「場」を設計することが知識創造の土台となる。</p>
+        </div>
+      </div>
+      <div class="spec-step">
+        <div class="spec-step-num">04</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">トランザクティブ・メモリーを組織に埋め込む</p>
+          <p class="spec-step-why">全員が全知識を持つ必要はない。「誰が何を知るか」を組織全体で共有するマップを作ることが効率的な知識活用に直結する。</p>
+        </div>
+      </div>
+      <div class="spec-step">
+        <div class="spec-step-num">05</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">探索と活用のバランスを定期的に確認する</p>
+          <p class="spec-step-why">KM施策が既存知識の整理（活用）に偏っていないか、新知識の取り込み（探索）も促されているかを戦略レベルで評価する。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="books">
+    <div class="section-head">
+      <div><div class="section-num"><strong>D</strong> · 定着</div></div>
+      <div>
+        <h2 class="section-title">知識の定着</h2>
+        <div class="section-sub">Books, exercises &amp; reflection</div>
+      </div>
+    </div>
+
+    <div class="book-grid">
+      <div class="book">
+        <div class="book-when">古典</div>
+        <div class="book-bar"></div>
+        <div class="book-title">知識創造企業</div>
+        <div class="book-author">野中郁次郎・竹内弘高</div>
+        <div class="book-desc">SECIモデルを提唱したKMの最重要文献。日本企業の競争力をKM視点で解明。</div>
+      </div>
+      <div class="book">
+        <div class="book-when">入門</div>
+        <div class="book-bar"></div>
+        <div class="book-title">知識経営のすすめ</div>
+        <div class="book-author">野中郁次郎・紺野登</div>
+        <div class="book-desc">「場」の概念と実践的なKM方法論を平易に解説。</div>
+      </div>
+      <div class="book">
+        <div class="book-when">実践</div>
+        <div class="book-bar"></div>
+        <div class="book-title">実践コミュニティの理論</div>
+        <div class="book-author">Etienne Wenger</div>
+        <div class="book-desc">実践共同体（CoP）の理論的基盤と組織への応用を詳述。</div>
+      </div>
+      <div class="book">
+        <div class="book-when">応用</div>
+        <div class="book-bar"></div>
+        <div class="book-title">両利きの経営</div>
+        <div class="book-author">O'Reilly &amp; Tushman</div>
+        <div class="book-desc">探索と活用のバランスを組織設計として実現する方法論。</div>
+      </div>
+    </div>
+
+    <div class="exercises">
+      <div class="exercise">
+        <span class="exercise-level">棚卸し · Lv.1</span>
+        <p class="exercise-q">自分の職場で「この人が辞めたら一番困る知識は何か」を3つ挙げよ。その知識はいま形式知化されているか？</p>
+      </div>
+      <div class="exercise">
+        <span class="exercise-level">診断 · Lv.2</span>
+        <p class="exercise-q">自分のチームのSECIモデルを診断せよ。4つのモードのうち、最も機能していないのはどれか？その原因は何か？</p>
+      </div>
+      <div class="exercise">
+        <span class="exercise-level">設計 · Lv.3</span>
+        <p class="exercise-q">チームの「トランザクティブ・メモリー」を可視化するエキスパートマップを作成し、知識の流れを設計せよ。誰が何を知っていて、どこに空白があるか。</p>
+      </div>
+    </div>
+
+    <div class="closing-pull">
+      ナレッジマネジメントが示す核心は、<strong>「知識は個人に宿るが、価値は組織の流れの中で生まれる」</strong>という洞察だ。
+      ツールを導入するだけでは知識は流れない。
+      <em>人が出会い、対話し、実践する場を設計すること</em>——それがKMの最も本質的な問いである。
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer page">
+  <a href="index.html" class="footer-back"><span class="seal"></span>知識地図に戻る</a>
+  <div>ナレッジマネジメント 深掘りガイド｜七領域をつなぐ知識地図</div>
+</footer>
+
+<script>
+const prog = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+  prog.style.width = pct + '%';
+}, { passive: true });
+const btn = document.getElementById('themeToggle');
+btn.addEventListener('click', () => {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+  btn.textContent = isDark ? 'DARK' : 'LIGHT';
+});
+</script>
+</body>
+</html>

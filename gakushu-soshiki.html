@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>学習する組織 深掘りガイド｜七領域をつなぐ知識地図</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&family=Shippori+Mincho:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --paper: #efe8d6; --paper-2: #e7dec7; --paper-deep: #ddd0b1;
+  --ink: #1c1814; --ink-2: #2f2820; --muted: #6e6452; --muted-2: #998b71;
+  --rule: #c5b793; --rule-soft: #d8caa9;
+  --accent: #b13427; --accent-deep: #84251c; --indigo: #2a4858; --gold: #a37b1f;
+  --serif: "Shippori Mincho", "Noto Serif JP", "YuMincho", "Hiragino Mincho ProN", serif;
+  --sans: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "YuGothic", system-ui, sans-serif;
+  --pad-page: clamp(20px, 4vw, 56px);
+}
+[data-theme="dark"] {
+  --paper: #15120e; --paper-2: #1c1813; --paper-deep: #251f17;
+  --ink: #ece2c8; --ink-2: #d6cab0; --muted: #8e826a; --muted-2: #6b6150;
+  --rule: #3a3225; --rule-soft: #2a2419;
+  --accent: #d2503e; --accent-deep: #a13a2c; --indigo: #6f96a9; --gold: #c9a14a;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: var(--serif); font-feature-settings: "palt"; line-height: 1.85; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body { background: radial-gradient(ellipse 80% 60% at 20% 0%, color-mix(in oklab, var(--paper-2) 70%, transparent) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 100%, color-mix(in oklab, var(--paper-deep) 55%, transparent) 0%, transparent 70%), var(--paper); min-height: 100vh; }
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .35; z-index: 0; background-image: radial-gradient(rgba(0,0,0,.025) 1px, transparent 1px), radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px); background-size: 3px 3px, 5px 5px; background-position: 0 0, 1px 2px; mix-blend-mode: multiply; }
+[data-theme="dark"] body::before { mix-blend-mode: screen; opacity: .15; }
+main, header, footer, nav { position: relative; z-index: 1; }
+.scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); z-index: 100; width: 0%; transition: width .08s linear; }
+.page { max-width: 1080px; margin: 0 auto; padding: 0 var(--pad-page); }
+.divider { height: 1px; background: linear-gradient(to right, transparent, var(--rule) 20%, var(--rule) 80%, transparent); margin: clamp(40px, 6vw, 72px) 0; border: 0; }
+.topnav { position: sticky; top: 0; z-index: 50; background: color-mix(in oklab, var(--paper) 88%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule-soft); }
+.topnav-inner { max-width: 1080px; margin: 0 auto; padding: 14px var(--pad-page); display: flex; align-items: center; gap: 16px; }
+.back-link { font-family: var(--sans); font-size: 12px; letter-spacing: .14em; color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; transition: color .15s, border-color .15s; }
+.back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.topnav-title { font-family: var(--serif); font-size: 15px; font-weight: 600; letter-spacing: .08em; color: var(--ink); }
+.topnav-links { display: flex; gap: 20px; margin-left: auto; font-family: var(--sans); font-size: 12px; letter-spacing: .08em; color: var(--muted); }
+.topnav-links a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; transition: color .15s, border-color .15s; }
+.topnav-links a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+@media (max-width: 700px) { .topnav-links { display: none; } }
+.theme-toggle { border: 1px solid var(--rule); background: transparent; color: var(--muted); font-family: var(--sans); font-size: 11px; letter-spacing: .14em; padding: 6px 10px; border-radius: 2px; cursor: pointer; transition: all .15s; }
+.theme-toggle:hover { color: var(--ink); border-color: var(--ink); }
+.hero { padding: clamp(56px, 9vw, 120px) 0 clamp(36px, 5vw, 64px); display: grid; gap: clamp(20px, 3vw, 40px); }
+.hero-breadcrumb { font-family: var(--sans); font-size: 11px; letter-spacing: .36em; color: var(--muted); text-transform: uppercase; }
+.hero-title { font-family: var(--serif); font-weight: 600; font-size: clamp(36px, 6vw, 80px); line-height: 1.1; letter-spacing: .02em; margin: 0; }
+.hero-title .accent { color: var(--accent); }
+.hero-en { font-family: var(--sans); font-size: 12px; letter-spacing: .32em; color: var(--muted); text-transform: uppercase; margin-top: -8px; }
+.hero-lead { max-width: 54ch; font-size: clamp(15px, 1.4vw, 17.5px); line-height: 2; color: var(--ink-2); margin: 0; }
+.hero-stats { display: flex; gap: 24px; flex-wrap: wrap; font-family: var(--sans); font-size: 11px; letter-spacing: .16em; color: var(--muted); padding-top: 20px; border-top: 1px solid var(--rule-soft); }
+.hero-stats .label { color: var(--muted-2); margin-right: 6px; }
+.section { padding: clamp(36px, 5vw, 60px) 0; }
+.section-head { display: grid; grid-template-columns: 100px 1fr; gap: 28px; align-items: baseline; margin-bottom: clamp(32px, 4vw, 56px); padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+@media (max-width: 640px) { .section-head { grid-template-columns: 1fr; gap: 6px; } }
+.section-num { font-family: var(--serif); font-size: 13px; letter-spacing: .28em; color: var(--accent); }
+.section-title { font-family: var(--serif); font-weight: 600; font-size: clamp(24px, 3.2vw, 40px); line-height: 1.25; margin: 0; }
+.section-sub { font-family: var(--sans); font-size: 11.5px; letter-spacing: .22em; color: var(--muted); text-transform: uppercase; margin-top: 6px; }
+.lens-prose p { font-size: 16.5px; line-height: 2; margin: 0 0 1.4em; color: var(--ink-2); text-align: justify; text-justify: inter-character; max-width: 68ch; }
+.lens-prose p:first-child::first-letter { font-size: 3.2em; float: left; line-height: .9; padding: 4px 10px 0 0; font-weight: 600; color: var(--accent); }
+.examples { display: grid; gap: 20px; margin-top: 32px; }
+.example { display: grid; grid-template-columns: 3px 1fr; gap: 0 20px; align-items: start; }
+.example-bar { background: var(--accent); height: 100%; border-radius: 2px; }
+.example:nth-child(2) .example-bar { background: var(--indigo); }
+.example:nth-child(3) .example-bar { background: var(--gold); }
+.example-label { font-family: var(--sans); font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; display: block; }
+.example:nth-child(2) .example-label { color: var(--indigo); }
+.example:nth-child(3) .example-label { color: var(--gold); }
+.example-scene { font-size: 15.5px; color: var(--ink-2); margin: 0 0 .5em; font-style: italic; line-height: 1.8; }
+.example-analysis { font-size: 14.5px; line-height: 1.9; color: var(--ink-2); background: var(--paper-2); border-radius: 3px; padding: 12px 16px; margin: 0; }
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 32px; padding: 24px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 4px; }
+.flow-label { font-family: var(--sans); font-size: 10px; letter-spacing: .18em; color: var(--muted); text-transform: uppercase; width: 100%; margin-bottom: 4px; }
+.flow-step { font-family: var(--sans); font-size: 12px; background: var(--paper); border: 1px solid var(--rule-soft); padding: 6px 12px; border-radius: 2px; color: var(--ink); white-space: nowrap; }
+.flow-arrow { color: var(--accent); font-size: 14px; }
+.concepts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.concept-card { border: 1px solid var(--rule); background: var(--paper-2); border-radius: 4px; padding: clamp(20px, 2.5vw, 28px); display: grid; gap: 14px; }
+.concept-card-header { display: grid; gap: 4px; }
+.concept-num { font-family: var(--sans); font-size: 10px; letter-spacing: .22em; color: var(--accent); text-transform: uppercase; }
+.concept-name { font-family: var(--serif); font-weight: 600; font-size: clamp(20px, 2.2vw, 26px); line-height: 1.2; margin: 0; }
+.concept-tagline { font-family: var(--sans); font-size: 12px; letter-spacing: .08em; color: var(--muted); background: var(--paper); border-radius: 2px; padding: 4px 10px; display: inline-block; width: max-content; border: 1px solid var(--rule-soft); }
+.concept-author { font-family: var(--sans); font-size: 11px; color: var(--muted-2); letter-spacing: .06em; }
+.concept-body { font-size: 14.5px; line-height: 1.9; color: var(--ink-2); }
+.concept-body p { margin: 0 0 .8em; }
+.concept-body p:last-child { margin: 0; }
+.concept-example { font-size: 13.5px; line-height: 1.85; border-left: 2px solid var(--accent); padding: 10px 14px; background: linear-gradient(to right, color-mix(in oklab, var(--accent) 5%, transparent), transparent); color: var(--ink-2); }
+.concept-example-label { font-family: var(--sans); font-size: 10px; letter-spacing: .22em; color: var(--accent); text-transform: uppercase; display: block; margin-bottom: 4px; }
+.concept-use { font-size: 13.5px; line-height: 1.85; padding: 10px 14px; background: color-mix(in oklab, var(--indigo) 6%, transparent); border-left: 2px solid var(--indigo); color: var(--ink-2); }
+.concept-use-label { font-family: var(--sans); font-size: 10px; letter-spacing: .22em; color: var(--indigo); text-transform: uppercase; display: block; margin-bottom: 4px; }
+.connections { display: grid; gap: 20px; }
+.connection { display: grid; grid-template-columns: 200px 1fr; gap: 20px; align-items: start; border-top: 1px solid var(--rule-soft); padding-top: 20px; }
+@media (max-width: 640px) { .connection { grid-template-columns: 1fr; gap: 10px; } }
+.connection-type { font-family: var(--sans); font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; }
+.connection-type.prereq { color: var(--accent); }
+.connection-type.complement { color: var(--indigo); }
+.connection-type.contrast { color: var(--gold); }
+.connection-pair { font-family: var(--serif); font-weight: 600; font-size: clamp(15px, 1.6vw, 18px); line-height: 1.4; margin: 0 0 6px; }
+.connection-desc { font-size: 14.5px; line-height: 1.9; color: var(--ink-2); margin: 0; }
+.spec-flow { display: grid; gap: 0; counter-reset: step; }
+.spec-step { display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: start; padding: 16px 0; border-bottom: 1px solid var(--rule-soft); }
+.spec-step:last-child { border-bottom: 0; }
+.spec-step-num { counter-increment: step; font-family: var(--sans); font-size: 11px; letter-spacing: .1em; color: var(--paper); background: var(--accent); border-radius: 2px; padding: 4px 8px; text-align: center; align-self: start; margin-top: 4px; }
+.spec-step:nth-child(odd) .spec-step-num { background: var(--indigo); }
+.spec-step-q { font-family: var(--serif); font-weight: 600; font-size: clamp(15px, 1.6vw, 18px); line-height: 1.4; color: var(--ink); margin: 0 0 6px; }
+.spec-step-why { font-size: 14px; color: var(--muted); line-height: 1.85; margin: 0; }
+.book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.book { border: 1px solid var(--rule-soft); background: var(--paper); padding: 18px 18px 20px; border-radius: 3px; display: grid; gap: 4px; }
+.book-when { font-family: var(--sans); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.book-bar { width: 20px; height: 3px; background: var(--accent); margin-bottom: 8px; }
+.book-title { font-family: var(--serif); font-weight: 600; font-size: 15px; line-height: 1.5; }
+.book-author { font-family: var(--sans); font-size: 11px; color: var(--muted); letter-spacing: .06em; }
+.book-desc { font-size: 13px; color: var(--ink-2); line-height: 1.75; margin-top: 6px; }
+.exercises { display: grid; gap: 16px; }
+.exercise { border: 1px solid var(--rule-soft); border-left: 3px solid var(--accent); background: var(--paper-2); padding: 18px 20px; border-radius: 0 3px 3px 0; }
+.exercise:nth-child(2) { border-left-color: var(--indigo); }
+.exercise:nth-child(3) { border-left-color: var(--gold); }
+.exercise-level { font-family: var(--sans); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 6px; }
+.exercise:nth-child(2) .exercise-level { color: var(--indigo); }
+.exercise:nth-child(3) .exercise-level { color: var(--gold); }
+.exercise-q { font-family: var(--serif); font-size: clamp(15px, 1.6vw, 17px); line-height: 1.65; color: var(--ink); margin: 0; }
+.closing-pull { margin-top: 36px; padding: 28px clamp(20px, 3vw, 40px); background: var(--ink); color: var(--paper); border-radius: 4px; font-family: var(--serif); font-size: clamp(15px, 1.5vw, 18px); line-height: 2; }
+[data-theme="dark"] .closing-pull { background: var(--paper-deep); color: var(--ink); }
+.closing-pull strong { color: var(--accent); font-weight: 600; }
+.closing-pull em { font-style: normal; color: var(--gold); }
+.footer { margin-top: clamp(56px, 8vw, 100px); padding: 40px 0 48px; border-top: 1px solid var(--rule); font-family: var(--sans); font-size: 12px; color: var(--muted); letter-spacing: .08em; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; align-items: center; }
+.footer-back { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); text-decoration: none; font-size: 12.5px; letter-spacing: .12em; border-bottom: 1px solid transparent; transition: border-color .15s; }
+.footer-back:hover { border-bottom-color: var(--accent); }
+.seal { display: inline-block; width: 10px; height: 10px; background: var(--accent); margin-right: 8px; vertical-align: middle; border-radius: 1px; }
+[data-tooltip] { position: relative; cursor: help; border-bottom: 1px dotted var(--muted); }
+[data-tooltip]:hover::after { content: attr(data-tooltip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--paper); font-family: var(--sans); font-size: 11px; letter-spacing: .04em; padding: 6px 10px; border-radius: 2px; white-space: nowrap; z-index: 100; pointer-events: none; }
+.ent-person { color: var(--indigo); border-bottom: 1px dotted var(--indigo); }
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="progress"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="back-link">← 知識地図に戻る</a>
+    <div class="topnav-title">学習する組織 深掘りガイド</div>
+    <div class="topnav-links">
+      <a href="#lens">レンズ</a>
+      <a href="#concepts">主要概念</a>
+      <a href="#connections">つながり</a>
+      <a href="#books">知識の定着</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="テーマ切替">DARK</button>
+  </div>
+</nav>
+
+<main class="page">
+
+  <header class="hero">
+    <div class="hero-breadcrumb">知識地図 · 領域 06</div>
+    <h1 class="hero-title">学習する<span class="accent">組織</span></h1>
+    <div class="hero-en">The Learning Organization — A Deep Dive</div>
+    <p class="hero-lead">
+      変化の激しい時代に、なぜある組織は適応し、別の組織は同じ過ちを繰り返すのか。
+      Peterが提唱した「学習する組織」は、システム思考を中核に据え、
+      組織が継続的に学習・変革できる能力を育てる五つのディシプリンを提示した。
+      本稿はChatGPTとGeminiによるリサーチを統合し、12の主要概念を案内する。
+    </p>
+    <div class="hero-stats">
+      <div><span class="label">主要概念</span>12</div>
+      <div><span class="label">構成</span>レンズ ／ 概念解剖 ／ つながり ／ 知識の定着</div>
+      <div><span class="label">出典</span>ChatGPT + Gemini による二重リサーチを統合</div>
+    </div>
+  </header>
+
+  <hr class="divider" />
+
+  <section class="section" id="lens">
+    <div class="section-head">
+      <div><div class="section-num"><strong>A</strong> · 序</div></div>
+      <div>
+        <h2 class="section-title">この学問のレンズ</h2>
+        <div class="section-sub">How the learning organization sees the world</div>
+      </div>
+    </div>
+
+    <div class="lens-prose">
+      <p>
+        「学習する組織」が問うのは、「なぜ賢い人が集まる組織は、なぜ同じ失敗を繰り返すのか」という逆説だ。
+        <span class="ent-person" data-tooltip="MITスローン、第五の規律著者">Peter Senge</span>はその答えを「学習障害」と名づけた。
+        個人の学習能力がいくら高くても、組織の構造・文化・メンタルモデルがそれを妨げれば、
+        組織全体は学習できない。
+      </p>
+      <p>
+        学習する組織の理論は、「問題を起こした個人を責める」代わりに「問題を生み出しているシステムを変える」という視点を要求する。
+        五つのディシプリン（システム思考・自己マスタリー・メンタルモデル・共有ビジョン・チーム学習）は、
+        組織が本質的な変革能力を獲得するための訓練の体系だ。
+      </p>
+    </div>
+
+    <div class="examples">
+      <div class="example">
+        <div class="example-bar"></div>
+        <div class="example-content">
+          <span class="example-label">事例 01 · 部分最適の罠</span>
+          <p class="example-scene">営業部が大量受注して目標を達成したが、製造部が対応できず全社の納期が大幅に遅延した。</p>
+          <p class="example-analysis"><strong>システム思考</strong>の欠如。部門最適（営業の数字）が全体最適（顧客満足）を破壊した。相互依存を見る視点がなければ、一部の「成功」が全体の失敗を生む。</p>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-bar"></div>
+        <div class="example-content">
+          <span class="example-label">事例 02 · 防衛ルーティン</span>
+          <p class="example-scene">会議で誰もが「このプロジェクトはうまくいかない」と思っていたが、誰も口にしなかった。</p>
+          <p class="example-analysis"><strong>組織防衛ルーティン</strong>。不都合な真実を表に出すことが「場を乱す」と感じさせる文化が、集合的沈黙を生む。<strong>チーム学習</strong>が機能していれば、こうした困難な対話が可能になる。</p>
+        </div>
+      </div>
+      <div class="example">
+        <div class="example-bar"></div>
+        <div class="example-content">
+          <span class="example-label">事例 03 · 創造的テンション</span>
+          <p class="example-scene">理想のサービスと現実のリソース差に向き合い、チームが「何をすべきか」ではなく「何をしたいか」から議論を始めた。</p>
+          <p class="example-analysis"><strong>創造的テンション</strong>の活用。現状と理想のギャップを「問題」ではなく「エネルギーの源泉」として使う。<strong>共有ビジョン</strong>があるチームは、困難な現実を直視しても前向きに学習を続けられる。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <span class="flow-label">学習する組織の構築ステップ</span>
+      <span class="flow-step">学習障害を認識する</span><span class="flow-arrow">→</span>
+      <span class="flow-step">メンタルモデルを表出化</span><span class="flow-arrow">→</span>
+      <span class="flow-step">共有ビジョンを構築</span><span class="flow-arrow">→</span>
+      <span class="flow-step">チーム学習を実践</span><span class="flow-arrow">→</span>
+      <span class="flow-step">システム思考で構造を変える</span><span class="flow-arrow">→</span>
+      <span class="flow-step">五つのディシプリンを統合</span>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="concepts">
+    <div class="section-head">
+      <div><div class="section-num"><strong>B</strong> · 解剖</div></div>
+      <div>
+        <h2 class="section-title">主要概念の解剖</h2>
+        <div class="section-sub">12 core concepts examined</div>
+      </div>
+    </div>
+
+    <div class="concepts-grid">
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 01</div>
+          <h3 class="concept-name">学習する組織</h3>
+          <div class="concept-tagline">継続的に変革能力を育む組織</div>
+          <div class="concept-author">Peter Senge（1990）</div>
+        </div>
+        <div class="concept-body">
+          <p>「人々が継続的に能力を拡大し、本当に望む結果を創り出し、新しい思考パターンが育まれ、集合的な期待が解放され、人々が共に学ぶ方法を継続的に学んでいる組織」（Senge定義）。五つのディシプリンを統合して実現される。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          失敗を責めるのではなく「何を学べるか」を問い、そこから得た知識を次の設計に活かす文化を持つチーム。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          「学習する組織」は状態ではなく継続的なプロセス。五つのディシプリンを意識的に訓練し続けることが重要。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 02</div>
+          <h3 class="concept-name">システム思考</h3>
+          <div class="concept-tagline">第五のディシプリン——全体を見る目</div>
+          <div class="concept-author">Peter Senge（1990）</div>
+        </div>
+        <div class="concept-body">
+          <p>五つのディシプリンの中核。物事を個別の事象ではなく、相互に影響し合う要素の動的なシステムとして捉える思考法。フィードバックループ・遅れ・レバレッジポイントを見ることで、短期的な「症状」ではなく根本的な「構造」に働きかける。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          「残業が増える→疲れる→ミスが増える→さらに残業が増える」という強化ループをシステムとして捉え、構造を変える。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          問題解決の前に「因果ループ図」を描く習慣が、短期的対症療法から長期的構造変革へのシフトを促す。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 03</div>
+          <h3 class="concept-name">自己マスタリー</h3>
+          <div class="concept-tagline">個人が学習能力を深め続ける</div>
+          <div class="concept-author">Peter Senge（1990）</div>
+        </div>
+        <div class="concept-body">
+          <p>自分が本当に望む結果（ビジョン）と現在の現実を正確に見極め、その創造的テンションを使って継続的に学習・成長するディシプリン。組織の学習能力の基盤は個人の学習能力にある。「組織は人の能力以上には学習できない」。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          自分が5年後に「どうなっていたいか」を明確に持ち、それと現実のギャップを継続的な学習の動機として使っている人。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          個人ビジョンの明確化を支援する1on1設計が組織の学習能力の基盤となる。マネジャーは個人の「なりたい姿」を問う。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 04</div>
+          <h3 class="concept-name">メンタルモデル</h3>
+          <div class="concept-tagline">見えない前提が行動を支配する</div>
+          <div class="concept-author">Peter Senge（1990）</div>
+        </div>
+        <div class="concept-body">
+          <p>世界の仕組みについての深く染み込んだ仮定・イメージ・概念化。メンタルモデルは行動を無意識に方向づけるが、当人には見えにくい。このディシプリンは自分のメンタルモデルを表出化・問い直す能力を鍛える。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          「顧客は安さしか求めていない」というメンタルモデルが、新しい価値提案の試みを最初から阻んでいる。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          対話（ダイアローグ）の実践で「なぜそう思うのか」を問い、メンタルモデルを表出化する。推論のはしごを下りる訓練。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 05</div>
+          <h3 class="concept-name">共有ビジョン</h3>
+          <div class="concept-tagline">「私のビジョン」から「私たちのビジョン」へ</div>
+          <div class="concept-author">Peter Senge（1990）</div>
+        </div>
+        <div class="concept-body">
+          <p>組織の全メンバーが共に持つ「将来の姿」への真の共有感覚。トップが押しつける目標ではなく、個人のビジョンと組織のビジョンが共鳴して生まれる本物の共有感。これが困難な現実に立ち向かう集合的な意欲の源泉となる。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          「社員全員が自分の言葉でミッションを語れる」会社と「理念が額縁に飾られているだけ」の会社の違い。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          ビジョン形成では「アンロールアウト（公表）」より「ダイアローグ（共創）」が共有感を生む。対話を通じて個人ビジョンと接続する。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 06</div>
+          <h3 class="concept-name">チーム学習</h3>
+          <div class="concept-tagline">集合知を引き出す対話の実践</div>
+          <div class="concept-author">Peter Senge（1990）</div>
+        </div>
+        <div class="concept-body">
+          <p>チームが集合的な知性を開発・活用するプロセス。<strong>ダイアローグ</strong>（前提を保留して深く探求する対話）と<strong>ディスカッション</strong>（意見を主張し選択する対話）を状況に応じて使い分ける能力が核心。</p>
+          <p>チームは個々のメンバーより賢くなれるが、それは自明ではない——訓練が必要。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          「なぜそう思うのか教えてほしい」という問いが飛び交う会議と「自分の案を通す」競争が起きる会議の差。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          会議の設計でダイアローグとディスカッションの目的を分ける。探索フェーズでは評価を保留し、全員が話せる場を作る。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 07</div>
+          <h3 class="concept-name">創造的テンション</h3>
+          <div class="concept-tagline">ギャップをエネルギーに変える</div>
+          <div class="concept-author">Peter Senge（1990）</div>
+        </div>
+        <div class="concept-body">
+          <p>ビジョン（なりたい姿）と現実（今の姿）のギャップが生み出す張力。感情的テンション（「どうせ無理」という不安）に屈せず、創造的テンションを学習と変革のエネルギー源として使う。ゴムバンドを引っ張る力のメタファーで説明される。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          「理想のチームとはかけ離れている」という現実を直視しながら、だからこそ学習意欲が高まっているチーム。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          現状報告に「理想との差分」を明示する習慣が創造的テンションを活性化する。「問題」ではなく「目指す姿との差」として表現する。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 08</div>
+          <h3 class="concept-name">ダブルループ学習</h3>
+          <div class="concept-tagline">前提を問い直すことで真の変革が起きる</div>
+          <div class="concept-author">Argyris &amp; Schön（1978）</div>
+        </div>
+        <div class="concept-body">
+          <p>Sengeの学習する組織論の重要な基盤。エラーを修正するだけでなく（シングルループ）、なぜそのルール・目標があるのかという前提を問い直す（ダブルループ）学習。組織が本質的に変革するためには不可欠な学習様式。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          顧客満足度が下がる→対応スクリプトを改善する（シングルループ）vs. そもそもこのサービスモデルが顧客ニーズと合っているかを問い直す（ダブルループ）。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          「なぜこの指標が正しいのか」「このやり方の前提は今も有効か」を定期的に問う会議の設計がダブルループを促す。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 09</div>
+          <h3 class="concept-name">組織防衛ルーティン</h3>
+          <div class="concept-tagline">脅威から組織を守る「学習のワクチン」</div>
+          <div class="concept-author">Chris Argyris（1985）</div>
+        </div>
+        <div class="concept-body">
+          <p>組織のメンバーが困難で脅威的な状況を「上手く回避」するために使う習慣的な行動パターン。問題を回避することで短期的な快適さを保つが、長期的には学習と変革を妨げる。「触れてはいけない話題」が生まれ、組織の盲点となる。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          「あの部門との連携がうまくいっていない」という事実が全員に分かっているのに、会議の議題に上がらない。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          「言えないことを話す」場の設計が防衛ルーティンを解除する第一歩。心理的安全性なしに防衛ルーティンは溶けない。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 10</div>
+          <h3 class="concept-name">学習障害</h3>
+          <div class="concept-tagline">賢い人を集めても組織が学べない七つの理由</div>
+          <div class="concept-author">Peter Senge（1990）</div>
+        </div>
+        <div class="concept-body">
+          <p>Sengeが提示した7つの学習障害：①自分が担当者（部分的責任感）②敵は外にいる③積極的な関与という幻想④出来事への固執⑤ゆでがえるの比喩⑥経験から学ぶという幻想⑦管理チームという神話。これらが組織の学習を系統的に妨げる。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          「それは他の部門の問題だ」という思考は「敵は外にいる」障害。問題の根本が自部門の行動にあることに気づきにくい。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          7つの学習障害でチームの現状を診断する。「どの障害が最も機能しているか」を特定し、意識的に対処することが出発点。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 11</div>
+          <h3 class="concept-name">自己強化ループ</h3>
+          <div class="concept-tagline">成長も崩壊も加速させるフィードバック</div>
+          <div class="concept-author">Jay Forrester（1961）/ Senge（1990）</div>
+        </div>
+        <div class="concept-body">
+          <p>ある変化が同じ方向の変化をさらに促すフィードバックループ（R：Reinforcing）。良い循環（好循環）は成長を加速させ、悪い循環（悪循環）は問題を深刻化させる。「成功の構造」が生み出す好循環も、放置すれば限界に達する。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          学習が習慣化→スキルが上がる→仕事がうまくいく→自信が増す→さらに学習する、という正の強化ループ。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          組織内で「どんな強化ループが動いているか」をマッピングする。好循環を促進し、悪循環の増幅を早期に発見する。
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <div class="concept-card-header">
+          <div class="concept-num">Concept 12</div>
+          <h3 class="concept-name">バランスループ</h3>
+          <div class="concept-tagline">目標に向かう安定化のフィードバック</div>
+          <div class="concept-author">Jay Forrester（1961）/ Senge（1990）</div>
+        </div>
+        <div class="concept-body">
+          <p>目標との差を縮める方向に作用する安定化フィードバックループ（B：Balancing）。変化に抵抗し現状を維持しようとする力。変革施策を妨げる「見えない抵抗」もバランスループとして描ける。目標が不明確なとき、ループは迷走する。</p>
+        </div>
+        <div class="concept-example">
+          <span class="concept-example-label">例</span>
+          改革提案をすると「前例がない」「コストがかかる」という抵抗が自動的に現れる。これは現状を守るバランスループ。
+        </div>
+        <div class="concept-use">
+          <span class="concept-use-label">実践</span>
+          変革への抵抗を「悪意」ではなく「バランスループ」として見ることで、抵抗の構造的原因を探り、設計で対処できる。
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="connections">
+    <div class="section-head">
+      <div><div class="section-num"><strong>C</strong> · 接続</div></div>
+      <div>
+        <h2 class="section-title">他領域とのつながり</h2>
+        <div class="section-sub">How this field connects to the broader map</div>
+      </div>
+    </div>
+
+    <div class="connections">
+      <div class="connection">
+        <div>
+          <div class="connection-type prereq">前提となる領域</div>
+          <p class="connection-pair">組織論 → 学習する組織</p>
+          <p class="connection-desc">ダブルループ学習（Argyris）・組織文化（Schein）・心理的安全性（Edmondson）は学習する組織論の直接的な理論基盤。組織論なしに学習する組織の深みは理解できない。</p>
+        </div>
+      </div>
+      <div class="connection">
+        <div>
+          <div class="connection-type complement">補完する領域</div>
+          <p class="connection-pair">ナレッジマネジメント ↔ 学習する組織</p>
+          <p class="connection-desc">KMは知識の管理・流通のインフラを提供し、学習する組織はそれを活用して変革能力を育てる。両者は同じ目標（組織の学習）を異なる角度から追求する相補的な理論。</p>
+        </div>
+      </div>
+      <div class="connection">
+        <div>
+          <div class="connection-type contrast">核心となる領域</div>
+          <p class="connection-pair">システム思考 → 学習する組織</p>
+          <p class="connection-desc">Sengeは学習する組織の「第五のディシプリン」としてシステム思考を位置づけた。他の四つのディシプリンを統合する核心。システム思考なしに学習する組織の全体像は見えない。</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="section-head" style="margin-top: 0;">
+      <div><div class="section-num"><strong>C'</strong></div></div>
+      <div>
+        <h2 class="section-title">専門家の思考の流れ</h2>
+        <div class="section-sub">How a learning organization practitioner thinks</div>
+      </div>
+    </div>
+
+    <div class="spec-flow">
+      <div class="spec-step">
+        <div class="spec-step-num">01</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">「どの学習障害が最も機能しているか」を診断する</p>
+          <p class="spec-step-why">Sengeの7つの学習障害でチームの現状を評価し、最も根深い障害を特定する。ここが変革の出発点。</p>
+        </div>
+      </div>
+      <div class="spec-step">
+        <div class="spec-step-num">02</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">問題の構造（ループ図）を描く</p>
+          <p class="spec-step-why">現象を観察するだけでなく、背後の強化ループとバランスループを図示する。「何が何に影響しているか」を可視化する。</p>
+        </div>
+      </div>
+      <div class="spec-step">
+        <div class="spec-step-num">03</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">メンタルモデルを表出化するダイアローグを設計する</p>
+          <p class="spec-step-why">「なぜそう思うのか」を問い合う場が、隠れた前提を可視化する。これなしに真の共有理解は生まれない。</p>
+        </div>
+      </div>
+      <div class="spec-step">
+        <div class="spec-step-num">04</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">共有ビジョンを共創するプロセスを設計する</p>
+          <p class="spec-step-why">トップダウンの目標展開ではなく、個人ビジョンと組織ビジョンが対話を通じて共鳴する過程を設計する。</p>
+        </div>
+      </div>
+      <div class="spec-step">
+        <div class="spec-step-num">05</div>
+        <div class="spec-step-body">
+          <p class="spec-step-q">五つのディシプリンを継続的に訓練する</p>
+          <p class="spec-step-why">学習する組織は「なる」ものではなく「続ける」もの。五つのディシプリンを定期的に振り返り、実践を継続する文化を育てる。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="books">
+    <div class="section-head">
+      <div><div class="section-num"><strong>D</strong> · 定着</div></div>
+      <div>
+        <h2 class="section-title">知識の定着</h2>
+        <div class="section-sub">Books, exercises &amp; reflection</div>
+      </div>
+    </div>
+
+    <div class="book-grid">
+      <div class="book">
+        <div class="book-when">古典</div>
+        <div class="book-bar"></div>
+        <div class="book-title">学習する組織</div>
+        <div class="book-author">Peter Senge</div>
+        <div class="book-desc">五つのディシプリンを体系化した原典。実践事例と理論を統合した組織変革の必読書。</div>
+      </div>
+      <div class="book">
+        <div class="book-when">実践</div>
+        <div class="book-bar"></div>
+        <div class="book-title">フィールドブック 学習する組織「5つの能力」</div>
+        <div class="book-author">Peter Senge ほか</div>
+        <div class="book-desc">理論の実践版。演習・ツール・事例を豊富に収録した実践ガイド。</div>
+      </div>
+      <div class="book">
+        <div class="book-when">入門</div>
+        <div class="book-bar"></div>
+        <div class="book-title">なぜあなたのチームは機能しないのか</div>
+        <div class="book-author">Patrick Lencioni</div>
+        <div class="book-desc">チーム機能不全の5つの原因を物語形式で解説。チーム学習の妨げを理解する導入書。</div>
+      </div>
+      <div class="book">
+        <div class="book-when">応用</div>
+        <div class="book-bar"></div>
+        <div class="book-title">U理論</div>
+        <div class="book-author">Otto Scharmer</div>
+        <div class="book-desc">学習する組織論を発展させた変革の理論。個人・組織・社会の変容プロセスを描く。</div>
+      </div>
+    </div>
+
+    <div class="exercises">
+      <div class="exercise">
+        <span class="exercise-level">診断 · Lv.1</span>
+        <p class="exercise-q">Sengeの7つの学習障害を読み、自分のチームで最も機能している障害を1つ選べ。その障害はどんな行動として現れているか？</p>
+      </div>
+      <div class="exercise">
+        <span class="exercise-level">構造化 · Lv.2</span>
+        <p class="exercise-q">職場の繰り返す問題を1つ選び、その背後にある強化ループとバランスループを因果ループ図として描いてみよ。</p>
+      </div>
+      <div class="exercise">
+        <span class="exercise-level">設計 · Lv.3</span>
+        <p class="exercise-q">チームの「共有ビジョン」を確認し、全員が自分の言葉で語れるかテストせよ。語れない場合、共創プロセスを設計せよ。</p>
+      </div>
+    </div>
+
+    <div class="closing-pull">
+      学習する組織が示す最も深い洞察は、<strong>「組織の問題は人の問題ではなく、システムの問題だ」</strong>という認識の転換だ。
+      問題を起こした個人を責めても何も変わらない。
+      <em>その行動を生み出しているループ・構造・前提を変えること</em>——それが学習する組織が問い続ける根本的な変革の問いである。
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer page">
+  <a href="index.html" class="footer-back"><span class="seal"></span>知識地図に戻る</a>
+  <div>学習する組織 深掘りガイド｜七領域をつなぐ知識地図</div>
+</footer>
+
+<script>
+const prog = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+  prog.style.width = pct + '%';
+}, { passive: true });
+const btn = document.getElementById('themeToggle');
+btn.addEventListener('click', () => {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+  btn.textContent = isDark ? 'DARK' : 'LIGHT';
+});
+</script>
+</body>
+</html>
